@@ -77,9 +77,9 @@ export const ScrollWheelZoom = Handler.extend({
 		if (!delta) { return; }
 
 		if (map.options.scrollWheelZoom === 'center') {
-			map.setZoom(zoom + delta);
+			map.setZoom(zoom + delta, {animate:false});
 		} else {
-			map.setZoomAround(this._lastMousePos, zoom + delta);
+			map.setZoomAround(this._lastMousePos, zoom + delta, {animate:false});
 		}
 	}
 });
