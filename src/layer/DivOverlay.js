@@ -1,6 +1,5 @@
 import {Map} from '../map/Map';
 import {Layer} from './Layer';
-import {FeatureGroup} from './FeatureGroup';
 import * as Util from '../core/Util';
 import {toLatLng} from '../geo/LatLng';
 import {toPoint} from '../geometry/Point';
@@ -217,25 +216,11 @@ export var DivOverlay = Layer.extend({
 		return this;
 	},
 
-	// prepare bound overlay to open: update latlng pos / content source (for FeatureGroup)
+	// prepare bound overlay to open: update latlng pos
 	_prepareOpen: function (latlng) {
 		var source = this._source;
 		if (!source._map) { return false; }
 
-		if (source instanceof FeatureGroup) {
-			source = null;
-			var layers = this._source._layers;
-			for (var id in layers) {
-				if (layers[id]._map) {
-					source = layers[id];
-					break;
-				}
-			}
-			if (!source) { return false; } // Unable to get source layer.
-
-			// set overlay source to this layer
-			this._source = source;
-		}
 
 		if (!latlng) {
 			if (source.getCenter) {
