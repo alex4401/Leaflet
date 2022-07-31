@@ -105,7 +105,7 @@ export var Canvas = Renderer.extend({
 		var b = this._bounds,
 		    container = this._container,
 		    size = b.getSize(),
-		    m = Browser.retina ? 2 : 1;
+		    m = window.devicePixelRatio;
 
 		DomUtil.setPosition(container, b.min);
 
@@ -116,7 +116,7 @@ export var Canvas = Renderer.extend({
 		container.style.height = size.y + 'px';
 
 		if (Browser.retina) {
-			this._ctx.scale(2, 2);
+			this._ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
 		}
 
 		// translate so we use the same path coordinates after canvas element moves
