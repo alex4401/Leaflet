@@ -195,6 +195,9 @@ export var Map = Evented.extend({
 				this._tryAnimatedZoom && this._tryAnimatedZoom(center, zoom, options.zoom) :
 				this._tryAnimatedPan(center, options.pan);
 
+			var zooming = this._zoom !== zoom;
+			this._lastCenter = zooming ? null : center;
+
 			if (moved) {
 				// prevent resize handler call, the view will refresh after animation anyway
 				clearTimeout(this._sizeTimer);
@@ -305,7 +308,9 @@ export var Map = Evented.extend({
 	// @method panTo(latlng: LatLng, options?: Pan options): this
 	// Pans the map to a given center.
 	panTo: function (center, options) { // (LatLng)
-		return this.setView(center, this._zoom, {pan: options});
+		var result = this.setView(center, this._zoom, {pan: options});
+		this._movedAfterCentered = false;
+		return result;
 	},
 
 	// @method panBy(offset: Point, options?: Pan options): this
@@ -313,6 +318,8 @@ export var Map = Evented.extend({
 	panBy: function (offset, options) {
 		offset = toPoint(offset).round();
 		options = options || {};
+
+		this._movedAfterCentered = true;
 
 		if (!offset.x && !offset.y) {
 			return this.fire('moveend');
@@ -819,6 +826,9 @@ export var Map = Evented.extend({
 	getCenter: function () {
 		this._checkIfLoaded();
 
+		if (this._lastCenter && !this._movedAfterCentered) {
+			return this._lastCenter;
+		}
 		if (this._lastCenter && !this._moved()) {
 			return this._lastCenter;
 		}
@@ -1201,6 +1211,7 @@ export var Map = Evented.extend({
 		// Fired when the map zoom is about to change (e.g. before zoom animation).
 		// @event movestart: Event
 		// Fired when the view of the map starts changing (e.g. user starts dragging the map).
+		this._movedAfterCentered = !zoomChanged;
 		if (zoomChanged) {
 			this.fire('zoomstart');
 		}
@@ -1240,6 +1251,8 @@ export var Map = Evented.extend({
 
 	_moveEnd: function (zoomChanged) {
 		// @event zoomend: Event
+		this._movedAfterCentered = !zoomChanged;
+
 		// Fired when the map zoom changed, after any animations.
 		if (zoomChanged) {
 			this.fire('zoomend');
@@ -1605,6 +1618,8 @@ export var Map = Evented.extend({
 		if ((options && options.animate) !== true && !this.getSize().contains(offset)) { return false; }
 
 		this.panBy(offset, options);
+
+		this._movedAfterCentered = false;
 
 		return true;
 	},

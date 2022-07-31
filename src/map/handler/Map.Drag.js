@@ -131,6 +131,8 @@ export var Drag = Handler.extend({
 			this._prunePositions(time);
 		}
 
+		this._map._movedAfterCentered = true;
+
 		this._map
 		    .fire('move', e)
 		    .fire('drag', e);
