@@ -1,3 +1,22 @@
+# ARK Wiki's fork of Leaflet
+This repository contains all custom patches and cherry-picks to Leaflet's source code, that are used in builds bundled with https://ark.wiki.gg's Data Maps extension.
+
+## Patches
+- window.devicePixelRatio used for canvas rendering
+- PR#7926: Ensure map centre is maintained for zoom operations
+- PR#7603: Update getCenter() calculation and move it to PolyUtil / LineUtil
+- PR#8328: Fix wrong assigned parameter while calling map.\_move over requestAnimFrame
+- Allow zoomAnimation only on touch & box zooms
+- LayerGroup, FeatureGroup removed (for size reduction; the two can be replaced with simple arrays and loops)
+- VML support removed (for size reduction)
+- Internet Explorer support removed (for size reduction, and unsupported by ARK Wiki's CSS)
+- CRSes other than Simple removed (for size reduction)
+- All controls other than Zoom removed (for size reduction)
+- GeoJSON removed (for size reduction, custom format is used)
+- Tiles removed (for size reduction, custom format is used)
+
+---
+
 Leaflet was created 11 years ago by [Volodymyr Agafonkin](https://agafonkin.com), a Ukrainian citizen living in Kyiv.
 
 Russian bombs are now falling over Volodymyr's hometown. His family, his friends, his neighbours, thousands and thousands of absolutely wonderful people, are either seeking refuge or fighting for their lives.
