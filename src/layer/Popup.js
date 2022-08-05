@@ -379,8 +379,8 @@ Layer.include({
 	// Binds a popup to the layer with the passed `content` and sets up the
 	// necessary event listeners. If a `Function` is passed it will receive
 	// the layer as the first argument and should return a `String` or `HTMLElement`.
-	bindPopup(content, options) {
-		this._popup = this._initOverlay(Popup, this._popup, content, options);
+	bindPopup(content, options, classOverride) {
+		this._popup = this._initOverlay(classOverride || Popup, this._popup, content, options);
 		if (!this._popupHandlersAdded) {
 			this.on({
 				click: this._openPopup,
