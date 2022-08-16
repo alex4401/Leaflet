@@ -1,5 +1,5 @@
 import * as L from './Leaflet';
-export * from './Leaflet';
+//export * from './Leaflet';
 
 export default L;
 
