@@ -12,7 +12,7 @@ const banner = createBanner(version);
 
 /** @type {import('rollup').RollupOptions} */
 const config = {
-	input: 'src/LeafletWithGlobals.js',
+	input: 'src/LeafletMW.js',
 	output: [
 		{
 			file: pkg.main,
