@@ -332,7 +332,7 @@ export var Canvas = Renderer.extend({
 		var options = layer.options;
 
 		if (options.fill) {
-			ctx.globalAlpha = options.fillOpacity;
+			ctx.globalAlpha = options.fillOpacity * (layer.opacityMult || 1);
 			ctx.fillStyle = options.fillColor || options.color;
 			ctx.fill(options.fillRule || 'evenodd');
 		}
@@ -347,7 +347,7 @@ export var Canvas = Renderer.extend({
 				}
 				ctx.setLineDash(dash);
 			}
-			ctx.globalAlpha = options.opacity;
+			ctx.globalAlpha = options.opacity * (layer.opacityMult || 1);
 			ctx.lineWidth = options.weight;
 			ctx.strokeStyle = options.color;
 			ctx.lineCap = options.lineCap;
