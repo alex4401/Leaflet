@@ -333,7 +333,7 @@ export const Marker = Layer.extend({
 	},
 
 	_updateOpacity() {
-		const opacity = this.options.opacity;
+		const opacity = this.options.opacity * (this.opacityMult || 1);
 
 		if (this._icon) {
 			this._icon.style.opacity = opacity;
