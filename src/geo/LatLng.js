@@ -1,5 +1,5 @@
 import * as Util from '../core/Util';
-import {Earth} from './crs/CRS.Earth';
+import {Simple} from './crs/CRS.Simple';
 import {toLatLngBounds} from './LatLngBounds';
 
 /* @class LatLng
@@ -73,13 +73,13 @@ LatLng.prototype = {
 	// @method distanceTo(otherLatLng: LatLng): Number
 	// Returns the distance (in meters) to the given `LatLng` calculated using the [Spherical Law of Cosines](https://en.wikipedia.org/wiki/Spherical_law_of_cosines).
 	distanceTo: function (other) {
-		return Earth.distance(this, toLatLng(other));
+		return Simple.distance(this, toLatLng(other));
 	},
 
 	// @method wrap(): LatLng
 	// Returns a new `LatLng` object with the longitude wrapped so it's always between -180 and +180 degrees.
 	wrap: function () {
-		return Earth.wrapLatLng(this);
+		return Simple.wrapLatLng(this);
 	},
 
 	// @method toBounds(sizeInMeters: Number): LatLngBounds

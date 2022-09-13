@@ -21,9 +21,6 @@ var style = document.documentElement.style;
 // @property ie: Boolean; `true` for all Internet Explorer versions (not Edge).
 var ie = 'ActiveXObject' in window;
 
-// @property ielt9: Boolean; `true` for Internet Explorer versions less than 9.
-var ielt9 = ie && !document.addEventListener;
-
 // @property edge: Boolean; `true` for the Edge web browser.
 var edge = 'msLaunchUri' in navigator && !('documentMode' in document);
 
@@ -63,9 +60,6 @@ var opera12 = 'OTransition' in style;
 
 // @property win: Boolean; `true` when the browser is running in a Windows platform
 var win = navigator.platform.indexOf('Win') === 0;
-
-// @property ie3d: Boolean; `true` for all Internet Explorer versions supporting CSS transforms.
-var ie3d = ie && ('transition' in style);
 
 // @property webkit3d: Boolean; `true` for webkit-based browsers supporting CSS transforms.
 var webkit3d = ('WebKitCSSMatrix' in window) && ('m11' in new window.WebKitCSSMatrix()) && !android23;
@@ -164,8 +158,6 @@ function userAgentContains(str) {
 
 
 export default {
-	ie: ie,
-	ielt9: ielt9,
 	edge: edge,
 	webkit: webkit,
 	android: android,
@@ -178,7 +170,6 @@ export default {
 	phantom: phantom,
 	opera12: opera12,
 	win: win,
-	ie3d: ie3d,
 	webkit3d: webkit3d,
 	gecko3d: gecko3d,
 	any3d: any3d,
