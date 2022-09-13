@@ -3,7 +3,7 @@ import {Path} from './Path';
 import * as Util from '../../core/Util';
 import {toLatLng} from '../../geo/LatLng';
 import {LatLngBounds} from '../../geo/LatLngBounds';
-import {Earth} from '../../geo/crs/CRS.Earth';
+//import {Earth} from '../../geo/crs/CRS.Earth';
 
 
 /*
@@ -72,6 +72,7 @@ export const Circle = CircleMarker.extend({
 		    map = this._map,
 		    crs = map.options.crs;
 
+		/*
 		if (crs.distance === Earth.distance) {
 			const d = Math.PI / 180,
 			      latR = (this._mRadius / Earth.R) / d,
@@ -91,11 +92,14 @@ export const Circle = CircleMarker.extend({
 			this._radiusY = p.y - top.y;
 
 		} else {
+		*/
 			const latlng2 = crs.unproject(crs.project(this._latlng).subtract([this._mRadius, 0]));
 
 			this._point = map.latLngToLayerPoint(this._latlng);
 			this._radius = this._point.x - map.latLngToLayerPoint(latlng2).x;
+		/*
 		}
+		*/
 
 		this._updateBounds();
 	}

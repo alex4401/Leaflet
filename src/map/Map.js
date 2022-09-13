@@ -1,6 +1,6 @@
 import * as Util from '../core/Util';
 import {Evented} from '../core/Events';
-import {EPSG3857} from '../geo/crs/CRS.EPSG3857';
+import {Simple} from '../geo/crs/CRS.Simple';
 import {Point, toPoint} from '../geometry/Point';
 import {Bounds, toBounds} from '../geometry/Bounds';
 import {LatLng, toLatLng} from '../geo/LatLng';
@@ -33,10 +33,10 @@ export const Map = Evented.extend({
 
 	options: {
 		// @section Map State Options
-		// @option crs: CRS = L.CRS.EPSG3857
+		// @option crs: CRS = L.CRS.Simple
 		// The [Coordinate Reference System](#crs) to use. Don't change this if you're not
 		// sure what it means.
-		crs: EPSG3857,
+		crs: Simple,
 
 		// @option center: LatLng = undefined
 		// Initial geographic center of the map
