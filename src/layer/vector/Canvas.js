@@ -88,12 +88,13 @@ export var Canvas = Renderer.extend({
 	_updatePaths: function () {
 		if (this._postponeUpdatePaths) { return; }
 
-		var layer;
+		//var layer;
 		this._redrawBounds = null;
-		for (var id in this._layers) {
+		// ARK: do not call _updatePath twice
+		/*for (var id in this._layers) {
 			layer = this._layers[id];
 			layer._update();
-		}
+		}*/
 		this._redraw();
 	},
 
