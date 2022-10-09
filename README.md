@@ -2,18 +2,18 @@
 This repository contains all custom patches and cherry-picks to Leaflet's source code, that are used in builds bundled with https://ark.wiki.gg's Data Maps extension.
 
 ## Patches
-- window.devicePixelRatio used for canvas rendering
-- PR#7926: Ensure map centre is maintained for zoom operations
-- PR#7603: Update getCenter() calculation and move it to PolyUtil / LineUtil
-- PR#8328: Fix wrong assigned parameter while calling map.\_move over requestAnimFrame
+- PR#????: Support dashOffset on canvas layer
 - Allow zoomAnimation only on touch & box zooms
-- LayerGroup, FeatureGroup removed (for size reduction; the two can be replaced with simple arrays and loops)
-- VML support removed (for size reduction)
-- Internet Explorer support removed (for size reduction, and unsupported by ARK Wiki's CSS)
-- CRSes other than Simple removed (for size reduction)
+- LayerGroup, FeatureGroup removed (size reduction; the two can be replaced with simple arrays and loops)
+- Internet Explorer support removed (size reduction, and unsupported by ARK Wiki's CSS)
+- CRSes other than Simple removed (size reduction)
 - All controls other than Zoom removed (for size reduction)
-- GeoJSON removed (for size reduction, custom format is used)
-- Tiles removed (for size reduction, custom format is used)
+- GeoJSON removed (size reduction, custom format is used)
+- TileLayer removed (size reduction)
+- Support layer-managed opacity multipliers on markers
+- Expose API over `module.exports`
+- Cut canvas draw requests in half
+- Require brief interaction before allowing scroll zoom
 
 ---
 
