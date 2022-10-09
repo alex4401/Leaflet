@@ -1,6 +1,7 @@
 import {Map} from '../Map';
 import {Handler} from '../../core/Handler';
 import * as DomEvent from '../../dom/DomEvent';
+import * as Util from '../../core/Util';
 
 /*
  * L.Handler.ScrollWheelZoom is used by L.Map to enable mouse scroll wheel zoom on the map.
@@ -24,38 +25,55 @@ Map.mergeOptions({
 	// How many scroll pixels (as reported by [L.DomEvent.getWheelDelta](#domevent-getwheeldelta))
 	// mean a change of one full zoom level. Smaller values will make wheel-zooming
 	// faster (and vice versa).
-	wheelPxPerZoomLevel: 60
+	wheelPxPerZoomLevel: 60,
+
+	/* ARK: require brief interaction before handling zooming */
+	// @option requiredInteractionTime: Number = 30
+	requiredInteractionTime: 30
+	/* END ARK */
 });
 
 export var ScrollWheelZoom = Handler.extend({
 	addHooks: function () {
+		DomEvent.on(this._map._container, 'mouseout', this._onMouseOut, this);
 		DomEvent.on(this._map._container, 'wheel', this._onWheelScroll, this);
 
 		this._delta = 0;
 	},
 
 	removeHooks: function () {
+		DomEvent.off(this._map._container, 'mouseout', this._onMouseOut, this);
 		DomEvent.off(this._map._container, 'wheel', this._onWheelScroll, this);
 	},
 
-	_onWheelScroll: function (e) {
-		var delta = DomEvent.getWheelDelta(e);
-
-		var debounce = this._map.options.wheelDebounceTime;
-
-		this._delta += delta;
-		this._lastMousePos = this._map.mouseEventToContainerPoint(e);
-
-		if (!this._startTime) {
-			this._startTime = +new Date();
-		}
-
-		var left = Math.max(debounce - (+new Date() - this._startTime), 0);
-
+	_onMouseOut: function () {
 		clearTimeout(this._timer);
-		this._timer = setTimeout(this._performZoom.bind(this), left);
+		this._absoluteStartTime = null;
+	},
 
-		DomEvent.stop(e);
+	_onWheelScroll: function (e) {
+		if ( !this._absoluteStartTime ) {
+			this._absoluteStartTime = +new Date();
+		}
+		if ( ( +new Date() - this._absoluteStartTime ) >= this._map.options.requiredInteractionTime ) {
+			var delta = DomEvent.getWheelDelta(e);
+
+			var debounce = this._map.options.wheelDebounceTime;
+
+			this._delta += delta;
+			this._lastMousePos = this._map.mouseEventToContainerPoint(e);
+
+			if (!this._startTime) {
+				this._startTime = +new Date();
+			}
+
+			var left = Math.max(debounce - (+new Date() - this._startTime), 0);
+
+			clearTimeout(this._timer);
+			this._timer = setTimeout(this._performZoom.bind(this), left);
+
+			DomEvent.stop(e);
+		}
 	},
 
 	_performZoom: function () {
