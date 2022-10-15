@@ -60,7 +60,9 @@ export const ImageOverlay = Layer.extend({
 		// as per the [`decoding` HTML attribute](https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/decoding).
 		// If the image overlay is flickering when being added/removed, set
 		// this option to `'sync'`.
-		decoding: 'auto'
+		decoding: 'auto',
+
+		antiAliasing: 0
 	},
 
 	initialize(url, bounds, options) { // (String, LatLngBounds, Object)
@@ -238,8 +240,8 @@ export const ImageOverlay = Layer.extend({
 
 		DomUtil.setPosition(image, bounds.min);
 
-		image.style.width  = `${size.x}px`;
-		image.style.height = `${size.y}px`;
+		image.style.width  = `${size.x + this.options.antiAliasing}px`;
+		image.style.height = `${size.y + this.options.antiAliasing}px`;
 	},
 
 	_updateOpacity() {
