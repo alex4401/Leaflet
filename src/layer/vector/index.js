@@ -1,14 +1,14 @@
 export {Renderer} from './Renderer';
-export {Canvas, canvas} from './Canvas';
-import {SVG, create, pointsToPath, svg} from './SVG';
+export {Canvas} from './Canvas';
+import {SVG, create, pointsToPath} from './SVG';
 SVG.create = create;
 SVG.pointsToPath = pointsToPath;
-export {SVG, svg};
+export {SVG};
 import './Renderer.getRenderer';	// This is a bit of a hack, but needed because circular dependencies
 
 export {Path} from './Path';
-export {CircleMarker, circleMarker} from './CircleMarker';
-export {Circle, circle} from './Circle';
-export {Polyline, polyline} from './Polyline';
-export {Polygon, polygon} from './Polygon';
-export {Rectangle, rectangle} from './Rectangle';
+export {CircleMarker} from './CircleMarker';
+export {Circle} from './Circle';
+export {Polyline} from './Polyline';
+export {Polygon} from './Polygon';
+export {Rectangle} from './Rectangle';
