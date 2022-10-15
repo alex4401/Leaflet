@@ -53,7 +53,9 @@ export const ImageOverlay = Layer.extend({
 
 		// @option className: String = ''
 		// A custom class name to assign to the image. Empty by default.
-		className: ''
+		className: '',
+
+		antiAliasing: 0
 	},
 
 	initialize(url, bounds, options) { // (String, LatLngBounds, Object)
@@ -229,8 +231,8 @@ export const ImageOverlay = Layer.extend({
 
 		DomUtil.setPosition(image, bounds.min);
 
-		image.style.width  = `${size.x}px`;
-		image.style.height = `${size.y}px`;
+		image.style.width  = `${size.x + this.options.antiAliasing}px`;
+		image.style.height = `${size.y + this.options.antiAliasing}px`;
 	},
 
 	_updateOpacity() {
