@@ -274,3 +274,11 @@ export const TileLayer = GridLayer.extend({
 		return GridLayer.prototype._tileReady.call(this, coords, err, tile);
 	}
 });
+
+
+// @factory L.tilelayer(urlTemplate: String, options?: TileLayer options)
+// Instantiates a tile layer object given a `URL template` and optionally an options object.
+
+export function tileLayer(url, options) {
+	return new TileLayer(url, options);
+}

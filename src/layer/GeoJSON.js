@@ -437,3 +437,15 @@ LayerGroup.include({
 		};
 	}
 });
+
+// @namespace GeoJSON
+// @factory L.geoJSON(geojson?: Object, options?: GeoJSON options)
+// Creates a GeoJSON layer. Optionally accepts an object in
+// [GeoJSON format](https://tools.ietf.org/html/rfc7946) to display on the map
+// (you can alternatively add it later with `addData` method) and an `options` object.
+export function geoJSON(geojson, options) {
+	return new GeoJSON(geojson, options);
+}
+
+// Backward compatibility.
+export const geoJson = geoJSON;

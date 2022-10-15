@@ -142,3 +142,10 @@ Map.addInitHook(function () {
 		new Attribution().addTo(this);
 	}
 });
+
+// @namespace Control.Attribution
+// @factory L.control.attribution(options: Control.Attribution options)
+// Creates an attribution control.
+export const attribution = function (options) {
+	return new Attribution(options);
+};
