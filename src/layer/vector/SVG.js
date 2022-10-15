@@ -185,10 +185,3 @@ export const SVG = Renderer.extend({
 		DomUtil.toBack(layer._path);
 	}
 });
-
-// @namespace SVG
-// @factory L.svg(options?: Renderer options)
-// Creates a SVG renderer with the given options.
-export function svg(options) {
-	return Browser.svg ? new SVG(options) : null;
-}
