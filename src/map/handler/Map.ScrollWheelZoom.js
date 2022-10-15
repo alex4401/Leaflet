@@ -52,10 +52,8 @@ export const ScrollWheelZoom = Handler.extend({
 	},
 
 	_onWheelScroll(e) {
-		if ( !this._absoluteStartTime ) {
-			this._absoluteStartTime = +new Date();
-		}
-		if ( ( +new Date() - this._absoluteStartTime ) >= this._map.options.requiredInteractionTime ) {
+		if ( !this._map.options.stallInteractions || ( this._absoluteStartTime
+			&& ( +new Date() - this._absoluteStartTime ) >= this._map.options.requiredInteractionTime ) ) {
 			const delta = DomEvent.getWheelDelta(e);
 
 			const debounce = this._map.options.wheelDebounceTime;
@@ -73,6 +71,8 @@ export const ScrollWheelZoom = Handler.extend({
 			this._timer = setTimeout(this._performZoom.bind(this), left);
 
 			DomEvent.stop(e);
+		} else {
+			this._absoluteStartTime = +new Date();
 		}
 	},
 
