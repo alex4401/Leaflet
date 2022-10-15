@@ -120,7 +120,9 @@ export const Map = Evented.extend({
 
 		// @option trackResize: Boolean = true
 		// Whether the map automatically handles browser window resize to update itself.
-		trackResize: true
+		trackResize: true,
+
+		stallInteractions: true
 	},
 
 	initialize(id, options) { // (HTMLElement or String, Object)
