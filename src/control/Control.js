@@ -111,6 +111,10 @@ export const Control = Class.extend({
 	}
 });
 
+export const control = function (options) {
+	return new Control(options);
+};
+
 /* @section Extension methods
  * @uninheritable
  *

@@ -1,12 +1,17 @@
-import {Control} from './Control';
-//import {Layers} from './Control.Layers';
-import {Zoom} from './Control.Zoom';
-//import {Scale} from './Control.Scale';
-//import {Attribution} from './Control.Attribution';
+import {Control, control} from './Control';
+//import {Layers, layers} from './Control.Layers';
+import {Zoom, zoom} from './Control.Zoom';
+//import {Scale, scale} from './Control.Scale';
+//import {Attribution, attribution} from './Control.Attribution';
 
 //Control.Layers = Layers;
 Control.Zoom = Zoom;
 //Control.Scale = Scale;
 //Control.Attribution = Attribution;
 
-export {Control};
+//control.layers = layers;
+control.zoom = zoom;
+//control.scale = scale;
+//control.attribution = attribution;
+
+export {Control, control};

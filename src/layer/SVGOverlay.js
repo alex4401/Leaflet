@@ -39,3 +39,12 @@ export const SVGOverlay = ImageOverlay.extend({
 	// Returns the instance of [`SVGElement`](https://developer.mozilla.org/docs/Web/API/SVGElement)
 	// used by this overlay.
 });
+
+
+// @factory L.svgOverlay(svg: String|SVGElement, bounds: LatLngBounds, options?: SVGOverlay options)
+// Instantiates an image overlay object given an SVG element and the geographical bounds it is tied to.
+// A viewBox attribute is required on the SVG element to zoom in and out properly.
+
+export function svgOverlay(el, bounds, options) {
+	return new SVGOverlay(el, bounds, options);
+}

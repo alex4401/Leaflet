@@ -128,3 +128,10 @@ export const TileLayerWMS = TileLayer.extend({
 		return this;
 	}
 });
+
+
+// @factory L.tileLayer.wms(baseUrl: String, options: TileLayer.WMS options)
+// Instantiates a WMS tile layer object given a base URL of the WMS service and a WMS parameters/options object.
+export function tileLayerWMS(url, options) {
+	return new TileLayerWMS(url, options);
+}
