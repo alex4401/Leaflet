@@ -14,4 +14,4 @@ Map.TapHold = TapHold;
 import {TouchZoom} from './handler/Map.TouchZoom';
 Map.TouchZoom = TouchZoom;
 
-export {Map} from './Map';
+export {Map, createMap as map} from './Map';

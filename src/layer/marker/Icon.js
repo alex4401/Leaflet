@@ -156,3 +156,10 @@ export const Icon = Class.extend({
 		return Browser.retina && this.options[`${name}RetinaUrl`] || this.options[`${name}Url`];
 	}
 });
+
+
+// @factory L.icon(options: Icon options)
+// Creates an icon instance with the given options.
+export function icon(options) {
+	return new Icon(options);
+}

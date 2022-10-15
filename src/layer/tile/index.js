@@ -1,5 +1,6 @@
-/*export {GridLayer} from './GridLayer';
-import {TileLayer} from './TileLayer';
-import {TileLayerWMS} from './TileLayer.WMS';
+/*export {GridLayer, gridLayer} from './GridLayer';
+import {TileLayer, tileLayer} from './TileLayer';
+import {TileLayerWMS, tileLayerWMS} from './TileLayer.WMS';
 TileLayer.WMS = TileLayerWMS;
-export {TileLayer};*/
+tileLayer.wms = tileLayerWMS;
+export {TileLayer, tileLayer};*/

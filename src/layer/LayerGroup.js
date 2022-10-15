@@ -149,3 +149,10 @@ export const LayerGroup = Layer.extend({
 		return Util.stamp(layer);
 	}
 });
+
+
+// @factory L.layerGroup(layers?: Layer[], options?: Object)
+// Create a layer group, optionally given an initial set of layers and an `options` object.
+export const layerGroup = function (layers, options) {
+	return new LayerGroup(layers, options);
+};
