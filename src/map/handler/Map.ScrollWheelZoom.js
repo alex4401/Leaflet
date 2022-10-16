@@ -26,11 +26,6 @@ Map.mergeOptions({
 	// mean a change of one full zoom level. Smaller values will make wheel-zooming
 	// faster (and vice versa).
 	wheelPxPerZoomLevel: 60,
-
-	/* ARK: require brief interaction before handling zooming */
-	// @option requiredInteractionTime: Number = 30
-	requiredInteractionTime: 30
-	/* END ARK */
 });
 
 export const ScrollWheelZoom = Handler.extend({
@@ -72,7 +67,7 @@ export const ScrollWheelZoom = Handler.extend({
 
 			DomEvent.stop(e);
 		} else {
-			this._absoluteStartTime = +new Date();
+			this._absoluteStartTime = +new Date() + this._map.options.extraInteractionTime;
 		}
 	},
 
