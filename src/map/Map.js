@@ -122,7 +122,11 @@ export const Map = Evented.extend({
 		// Whether the map automatically handles browser window resize to update itself.
 		trackResize: true,
 
-		stallInteractions: true
+		/* ARK: require brief interaction before handling zooming */
+		stallInteractions: true,
+		requiredInteractionTime: 30,
+		extraInteractionTime: 20
+		/* END ARK */
 	},
 
 	initialize(id, options) { // (HTMLElement or String, Object)
