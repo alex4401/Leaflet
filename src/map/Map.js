@@ -123,7 +123,7 @@ export const Map = Evented.extend({
 		trackResize: true,
 
 		/* ARK: require brief interaction before handling zooming */
-		stallInteractions: true
+		stallInteractions: true,
 		requiredInteractionTime: 30,
 		extraInteractionTime: 20
 		/* END ARK */
