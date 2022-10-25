@@ -41,7 +41,7 @@ const phantom = userAgentContains('phantom');
 const opera12 = 'OTransition' in style;
 
 // @property win: Boolean; `true` when the browser is running in a Windows platform
-const win = navigator.platform.indexOf('Win') === 0;
+const win = navigator.platform.startsWith('Win');
 
 // @property webkit3d: Boolean; `true` for webkit-based browsers supporting CSS transforms.
 const webkit3d = ('WebKitCSSMatrix' in window) && ('m11' in new window.WebKitCSSMatrix());
@@ -125,13 +125,13 @@ const inlineSvg = !!svg && (function () {
 })();
 
 // @property mac: Boolean; `true` when the browser is running in a Mac platform
-const mac = navigator.platform.indexOf('Mac') === 0;
+const mac = navigator.platform.startsWith('Mac');
 
 // @property mac: Boolean; `true` when the browser is running in a Linux platform
-const linux = navigator.platform.indexOf('Linux') === 0;
+const linux = navigator.platform.startsWith('Linux');
 
 function userAgentContains(str) {
-	return navigator.userAgent.toLowerCase().indexOf(str) >= 0;
+	return navigator.userAgent.toLowerCase().includes(str);
 }
 
 
