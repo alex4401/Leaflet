@@ -55,6 +55,13 @@ export const ImageOverlay = Layer.extend({
 		// A custom class name to assign to the image. Empty by default.
 		className: '',
 
+		// @option decoding: String = 'auto'
+		// Tells the browser whether to decode the image in a synchronous fashion,
+		// as per the [`decoding` HTML attribute (https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/decoding).
+		// If the image overlay is flickering when being added/removed, set
+		// this option to `'sync'`.
+		decoding: 'auto',
+
 		antiAliasing: 0
 	},
 
@@ -201,6 +208,8 @@ export const ImageOverlay = Layer.extend({
 		if (this.options.crossOrigin || this.options.crossOrigin === '') {
 			img.crossOrigin = this.options.crossOrigin === true ? '' : this.options.crossOrigin;
 		}
+
+		img.decoding = this.options.decoding;
 
 		if (this.options.zIndex) {
 			this._updateZIndex();
