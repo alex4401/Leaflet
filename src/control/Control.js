@@ -3,6 +3,7 @@ import {Class} from '../core/Class.js';
 import {Map} from '../map/Map.js';
 import * as Util from '../core/Util.js';
 import * as DomUtil from '../dom/DomUtil.js';
+import * as DomEvent from '../dom/DomEvent.js';
 
 /*
  * @class Control
@@ -72,6 +73,7 @@ export const Control = Class.extend({
 		    corner = map._controlCorners[pos];
 
 		container.classList.add('leaflet-control');
+		DomEvent.on(container, 'mousedown touchstart dblclick contextmenu scroll', DomEvent.stopPropagation);
 
 		if (pos.includes('bottom')) {
 			corner.insertBefore(container, corner.firstChild);
