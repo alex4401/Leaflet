@@ -127,7 +127,8 @@ export const Zoom = Control.extend({
 // @option zoomControl: Boolean = true
 // Whether a [zoom control](#control-zoom) is added to the map by default.
 Map.mergeOptions({
-	zoomControl: true
+	zoomControl: true,
+	zoomControlOptions: {}
 });
 
 Map.addInitHook(function () {
@@ -136,7 +137,7 @@ Map.addInitHook(function () {
 		// @property zoomControl: Control.Zoom
 		// The default zoom control (only available if the
 		// [`zoomControl` option](#map-zoomcontrol) was `true` when creating the map).
-		this.zoomControl = new Zoom();
+		this.zoomControl = new Zoom(this.options.zoomControlOptions);
 		this.addControl(this.zoomControl);
 	}
 });
