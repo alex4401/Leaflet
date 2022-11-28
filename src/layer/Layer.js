@@ -170,6 +170,7 @@ Map.include({
 		}
 
 		this.whenReady(layer._layerAdd, layer);
+		this._haveLayersMutated = true;
 
 		return this;
 	},
@@ -193,6 +194,7 @@ Map.include({
 		}
 
 		layer._map = layer._mapToAdd = null;
+		this._haveLayersMutated = true;
 
 		return this;
 	},
