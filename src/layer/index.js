@@ -11,13 +11,13 @@ export {Layer} from './Layer';
 // GeoJSON.asFeature = asFeature;
 // export {GeoJSON, geoJSON, geoJson};
 
-export {ImageOverlay, imageOverlay} from './ImageOverlay';
+export {ImageOverlay} from './ImageOverlay';
 // export {VideoOverlay, videoOverlay} from './VideoOverlay';
 // export {SVGOverlay, svgOverlay} from './SVGOverlay';
 
 export {DivOverlay} from './DivOverlay';
-export {Popup, popup} from './Popup';
-export {Tooltip, tooltip} from './Tooltip';
+export {Popup} from './Popup';
+export {Tooltip} from './Tooltip';
 
 export * from './marker/index';
 // export * from './tile/index';
