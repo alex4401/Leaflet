@@ -297,13 +297,6 @@ export const Map = Evented.extend({
 		return this.setView(target.center, target.zoom, options);
 	},
 
-	// @method fitWorld(options?: fitBounds options): this
-	// Sets a map view that mostly contains the whole world with the maximum
-	// zoom level possible.
-	fitWorld(options) {
-		return this.fitBounds([[-90, -180], [90, 180]], options);
-	},
-
 	// @method panTo(latlng: LatLng, options?: Pan options): this
 	// Pans the map to a given center.
 	panTo(center, options) { // (LatLng)
