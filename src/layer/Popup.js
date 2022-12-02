@@ -5,7 +5,7 @@ import {Point, toPoint} from '../geometry/Point';
 import {Map} from '../map/Map';
 import {Layer} from './Layer';
 import {Path} from './vector/Path';
-import {FeatureGroup} from './FeatureGroup';
+// import {FeatureGroup} from './FeatureGroup';
 
 /*
  * @class Popup
@@ -420,9 +420,9 @@ Layer.include({
 	// Opens the bound popup at the specified `latlng` or at the default popup anchor if no `latlng` is passed.
 	openPopup(latlng) {
 		if (this._popup) {
-			if (!(this instanceof FeatureGroup)) {
-				this._popup._source = this;
-			}
+			// if (!(this instanceof FeatureGroup)) {
+			//	this._popup._source = this;
+			// }
 			if (this._popup._prepareOpen(latlng || this._latlng)) {
 				// open the popup on the map
 				this._popup.openOn(this._map);
