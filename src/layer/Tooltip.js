@@ -216,16 +216,6 @@ export const Tooltip = DivOverlay.extend({
 
 });
 
-// @namespace Tooltip
-// @factory L.tooltip(options?: Tooltip options, source?: Layer)
-// Instantiates a `Tooltip` object given an optional `options` object that describes its appearance and location and an optional `source` object that is used to tag the tooltip with a reference to the Layer to which it refers.
-// @alternative
-// @factory L.tooltip(latlng: LatLng, options?: Tooltip options)
-// Instantiates a `Tooltip` object given `latlng` where the tooltip will open and an optional `options` object that describes its appearance and location.
-export const tooltip = function (options, source) {
-	return new Tooltip(options, source);
-};
-
 // @namespace Map
 // @section Methods for Layers and Controls
 Map.include({
