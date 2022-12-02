@@ -4,6 +4,8 @@ import {toLatLng} from '../../geo/LatLng';
 import {Bounds} from '../../geometry/Bounds';
 
 
+const MAX_RADIUS_TO_GROW_MORE = 4;
+
 /*
  * @class CircleMarker
  * @aka L.CircleMarker
@@ -19,15 +21,15 @@ export const CircleMarker = Path.extend({
 	options: {
 		fill: true,
 
-		// @option radius: Number = 10
+		// @option baseRadius: Number = 10
 		// Radius of the circle marker, in pixels
-		radius: 10
+		baseRadius: 10
 	},
 
 	initialize(latlng, options) {
 		Util.setOptions(this, options);
 		this._latlng = toLatLng(latlng);
-		this._radius = this.options.radius;
+		this._radius = this.options.baseRadius * this.getDisplayScale();
 	},
 
 	// @method setLatLng(latLng: LatLng): this
@@ -51,7 +53,7 @@ export const CircleMarker = Path.extend({
 	// @method setRadius(radius: Number): this
 	// Sets the radius of a circle marker. Units are in pixels.
 	setRadius(radius) {
-		this.options.radius = this._radius = radius;
+		this.options.baseRadius = this._radius = radius;
 		return this.redraw();
 	},
 
@@ -59,6 +61,20 @@ export const CircleMarker = Path.extend({
 	// Returns the current radius of the circle
 	getRadius() {
 		return this._radius;
+	},
+
+	getDisplayScale() {
+		const mapOptions = this._map.options;
+		if (mapOptions.shouldScaleMarkers ||
+			// DEPRECATED(v0.14.1:v0.15.0)
+			mapOptions.shouldExpandZoomInvEx &&
+			this.options.baseRadius <= MAX_RADIUS_TO_GROW_MORE) {
+			return mapOptions.vecMarkerScale + (1 - mapOptions.iconMarkerScale) *
+				(this.options.zoomScaleFactor || mapOptions.markerZoomScaleFactor ||
+					// DEPRECATED(v0.14.1:v0.15.0)
+					mapOptions.expandZoomInvEx);
+		}
+		return mapOptions.vecMarkerScale;
 	},
 
 	setStyle(options) {
@@ -88,6 +104,7 @@ export const CircleMarker = Path.extend({
 	},
 
 	_updatePath() {
+		this._radius = this.options.baseRadius * this.getDisplayScale();
 		this._renderer._updateCircle(this);
 	},
 
