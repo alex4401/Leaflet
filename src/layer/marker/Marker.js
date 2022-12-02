@@ -197,6 +197,14 @@ export const Marker = Layer.extend({
 		if (this._icon && this._map) {
 			const pos = this._map.latLngToLayerPoint(this._latlng).round();
 			this._setPos(pos);
+
+			const size = point(this.options.icon.options.iconSize)._multiplyBy(this._map.options.iconMarkerScale);
+			const anchor = size.divideBy(2);
+
+			this._icon.style.marginLeft = `${-anchor.x}px`;
+			this._icon.style.marginTop = `${-anchor.y}px`;
+			this._icon.style.width = `${this.options.icon.options.iconSize[0] * this._map.options.iconMarkerScale}px`;
+			this._icon.style.height = `${this.options.icon.options.iconSize[1] * this._map.options.iconMarkerScale}px`;
 		}
 
 		return this;
