@@ -94,7 +94,9 @@ export const Marker = Layer.extend({
 
 		// @option autoPanSpeed: Number = 10
 		// Number of pixels the map should pan by.
-		autoPanSpeed: 10
+		autoPanSpeed: 10,
+
+		dismissed: false
 	},
 
 	/* @section
@@ -185,6 +187,19 @@ export const Marker = Layer.extend({
 			this.bindPopup(this._popup, this._popup.options);
 		}
 
+		if (this.options.dismissed) {
+			this._updateOpacity();
+		}
+
+		return this;
+	},
+
+	setDismissed(state) {
+		this.options.dismissed = state;
+		this.opacityMult = state ? 0.4 : 1;
+		if (this._map) {
+			this._updateOpacity();
+		}
 		return this;
 	},
 
