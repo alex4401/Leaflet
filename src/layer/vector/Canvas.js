@@ -492,9 +492,3 @@ export const Canvas = Renderer.extend({
 		this._requestRedraw(layer);
 	}
 });
-
-// @factory L.canvas(options?: Renderer options)
-// Creates a Canvas renderer with the given options.
-export function canvas(options) {
-	return Browser.canvas ? new Canvas(options) : null;
-}
