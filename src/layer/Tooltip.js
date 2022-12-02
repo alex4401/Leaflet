@@ -5,7 +5,7 @@ import {Layer} from './Layer';
 import * as DomUtil from '../dom/DomUtil';
 import * as DomEvent from '../dom/DomEvent';
 import * as Util from '../core/Util';
-import {FeatureGroup} from './FeatureGroup';
+// import {FeatureGroup} from './FeatureGroup';
 
 /*
  * @class Tooltip
@@ -328,9 +328,9 @@ Layer.include({
 	// Opens the bound tooltip at the specified `latlng` or at the default tooltip anchor if no `latlng` is passed.
 	openTooltip(latlng) {
 		if (this._tooltip) {
-			if (!(this instanceof FeatureGroup)) {
-				this._tooltip._source = this;
-			}
+			// if (!(this instanceof FeatureGroup)) {
+			//	this._tooltip._source = this;
+			// }
 			if (this._tooltip._prepareOpen(latlng)) {
 				// open the tooltip on the map
 				this._tooltip.openOn(this._map);
