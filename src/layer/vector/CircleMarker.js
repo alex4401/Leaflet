@@ -23,7 +23,9 @@ export const CircleMarker = Path.extend({
 
 		// @option baseRadius: Number = 10
 		// Radius of the circle marker, in pixels
-		baseRadius: 10
+		baseRadius: 10,
+
+		dismissed: false
 	},
 
 	initialize(latlng, options) {
@@ -61,6 +63,12 @@ export const CircleMarker = Path.extend({
 	// Returns the current radius of the circle
 	getRadius() {
 		return this._radius;
+	},
+
+	setDismissed(state) {
+		this.options.dismissed = state;
+		this.opacityMult = state ? 0.4 : 1;
+		return this.redraw();
 	},
 
 	getDisplayScale() {
