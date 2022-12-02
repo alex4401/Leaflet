@@ -1,5 +1,5 @@
 export {Renderer} from './Renderer';
-export {Canvas} from './Canvas';
+// export {Canvas} from './Canvas';
 // import {SVG, create, pointsToPath, svg} from './SVG';
 // SVG.create = create;
 // SVG.pointsToPath = pointsToPath;

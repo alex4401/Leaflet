@@ -1,9 +1,7 @@
-import {Renderer} from './Renderer';
-import * as DomUtil from '../../dom/DomUtil';
-import * as DomEvent from '../../dom/DomEvent';
-import Browser from '../../core/Browser';
-import {stamp} from '../../core/Util';
-import {svgCreate, pointsToPath} from './SVG.Util';
+const Leaflet = mw.loader.require('ext.datamaps.leaflet');
+const {Renderer, DomUtil, DomEvent, Browser} = Leaflet;
+const stamp = Leaflet.Util;
+import {svgCreate, pointsToPath} from '../layer/vector/SVG.Util';
 export {pointsToPath};
 
 export const create = svgCreate;

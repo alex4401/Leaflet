@@ -1,9 +1,5 @@
-import {Renderer} from './Renderer';
-import * as DomUtil from '../../dom/DomUtil';
-import * as DomEvent from '../../dom/DomEvent';
-import Browser from '../../core/Browser';
-import * as Util from '../../core/Util';
-import {Bounds} from '../../geometry/Bounds';
+const Leaflet = mw.loader.require('ext.datamaps.leaflet');
+const {Renderer, DomUtil, DomEvent, Browser, Util, Bounds} = Leaflet;
 
 /*
  * @class Canvas

@@ -14,7 +14,8 @@ module.exports = {
 	],
 	root: true,
 	globals: {
-		globalThis: true
+		globalThis: true,
+		mw: true
 	},
 	env: {
 		commonjs: true,
