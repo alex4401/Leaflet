@@ -54,9 +54,9 @@ export const Popup = DivOverlay.extend({
 		// The offset of the popup position.
 		offset: [0, 7],
 
-		// @option maxWidth: Number = 300
+		// @option maxWidth: Number = 250
 		// Max width of the popup, in pixels.
-		maxWidth: 300,
+		maxWidth: 250,
 
 		// @option minWidth: Number = 50
 		// Min width of the popup, in pixels.
