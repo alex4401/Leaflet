@@ -117,5 +117,9 @@ export const CircleMarker = Path.extend({
 	// Needed by the `Canvas` renderer for interactivity
 	_containsPoint(p) {
 		return p.distanceTo(this._point) <= this._radius + this._clickTolerance();
+	},
+
+	_getPopupAnchor() {
+		return [this._radius / 2, this._radius / 2];
 	}
 });
