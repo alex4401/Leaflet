@@ -92,6 +92,7 @@ export const CircleMarker = Path.extend({
 	},
 
 	_updateBounds() {
+		this._radius = this.options.radius * this.getDisplayScale();
 		const r = this._radius,
 		    r2 = this._radiusY || r,
 		    w = this._clickTolerance(),
