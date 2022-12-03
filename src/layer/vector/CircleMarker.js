@@ -21,9 +21,9 @@ export const CircleMarker = Path.extend({
 	options: {
 		fill: true,
 
-		// @option baseRadius: Number = 10
+		// @option radius: Number = 10
 		// Radius of the circle marker, in pixels
-		baseRadius: 10,
+		radius: 10,
 
 		dismissed: false
 	},
@@ -31,7 +31,6 @@ export const CircleMarker = Path.extend({
 	initialize(latlng, options) {
 		Util.setOptions(this, options);
 		this._latlng = toLatLng(latlng);
-		this._radius = this.options.baseRadius * this.getDisplayScale();
 	},
 
 	// @method setLatLng(latLng: LatLng): this
@@ -55,7 +54,7 @@ export const CircleMarker = Path.extend({
 	// @method setRadius(radius: Number): this
 	// Sets the radius of a circle marker. Units are in pixels.
 	setRadius(radius) {
-		this.options.baseRadius = this._radius = radius;
+		this.options.radius = this._radius = radius;
 		return this.redraw();
 	},
 
@@ -73,14 +72,9 @@ export const CircleMarker = Path.extend({
 
 	getDisplayScale() {
 		const mapOptions = this._map.options;
-		if (mapOptions.shouldScaleMarkers ||
-			// DEPRECATED(v0.14.1:v0.15.0)
-			mapOptions.shouldExpandZoomInvEx &&
-			this.options.baseRadius <= MAX_RADIUS_TO_GROW_MORE) {
-			return mapOptions.vecMarkerScale + (1 - mapOptions.iconMarkerScale) *
-				(this.options.zoomScaleFactor || mapOptions.markerZoomScaleFactor ||
-					// DEPRECATED(v0.14.1:v0.15.0)
-					mapOptions.expandZoomInvEx);
+		if (mapOptions.shouldScaleMarkers && this.options.radius <= MAX_RADIUS_TO_GROW_MORE) {
+			return mapOptions.vecMarkerScale + (1 - this._map._zoom / mapOptions.maxZoom) *
+				(this.options.zoomScaleFactor || mapOptions.markerZoomScaleFactor);
 		}
 		return mapOptions.vecMarkerScale;
 	},
@@ -112,12 +106,12 @@ export const CircleMarker = Path.extend({
 	},
 
 	_updatePath() {
-		this._radius = this.options.baseRadius * this.getDisplayScale();
+		this._radius = this.options.radius * this.getDisplayScale();
 		this._renderer._updateCircle(this);
 	},
 
 	_empty() {
-		return this._radius && !this._renderer._bounds.intersects(this._pxBounds);
+		return this.options.radius && !this._renderer._bounds.intersects(this._pxBounds);
 	},
 
 	// Needed by the `Canvas` renderer for interactivity
