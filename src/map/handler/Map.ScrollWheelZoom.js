@@ -29,7 +29,6 @@ Map.mergeOptions({
 
 export const ScrollWheelZoom = Handler.extend({
 	addHooks() {
-		DomEvent.on(this._map._container, 'click', this._onClick, this);
 		DomEvent.on(this._map._container, 'mouseout', this._onMouseOut, this);
 		DomEvent.on(this._map._container, 'wheel', this._onWheelScroll, this);
 
@@ -37,43 +36,32 @@ export const ScrollWheelZoom = Handler.extend({
 	},
 
 	removeHooks() {
-		DomEvent.off(this._map._container, 'click', this._onClick, this);
 		DomEvent.off(this._map._container, 'mouseout', this._onMouseOut, this);
 		DomEvent.off(this._map._container, 'wheel', this._onWheelScroll, this);
 	},
 
-	_onClick() {
-		this._absoluteStartTime = 1;
-	},
-
 	_onMouseOut() {
 		clearTimeout(this._timer);
-		this._absoluteStartTime = null;
 	},
 
 	_onWheelScroll(e) {
-		if (!this._map.options.stallInteractions || (this._absoluteStartTime &&
-			(+new Date() - this._absoluteStartTime) >= this._map.options.requiredInteractionTime)) {
-			const delta = DomEvent.getWheelDelta(e);
+		const delta = DomEvent.getWheelDelta(e);
 
-			const debounce = this._map.options.wheelDebounceTime;
+		const debounce = this._map.options.wheelDebounceTime;
 
-			this._delta += delta;
-			this._lastMousePos = this._map.mouseEventToContainerPoint(e);
+		this._delta += delta;
+		this._lastMousePos = this._map.mouseEventToContainerPoint(e);
 
-			if (!this._startTime) {
-				this._startTime = +new Date();
-			}
-
-			const left = Math.max(debounce - (+new Date() - this._startTime), 0);
-
-			clearTimeout(this._timer);
-			this._timer = setTimeout(this._performZoom.bind(this), left);
-
-			DomEvent.stop(e);
-		} else {
-			this._absoluteStartTime = +new Date() + this._map.options.extraInteractionTime;
+		if (!this._startTime) {
+			this._startTime = +new Date();
 		}
+
+		const left = Math.max(debounce - (+new Date() - this._startTime), 0);
+
+		clearTimeout(this._timer);
+		this._timer = setTimeout(this._performZoom.bind(this), left);
+
+		DomEvent.stop(e);
 	},
 
 	_performZoom() {

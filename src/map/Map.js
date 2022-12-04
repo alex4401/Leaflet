@@ -120,13 +120,7 @@ export const Map = Evented.extend({
 
 		// @option trackResize: Boolean = true
 		// Whether the map automatically handles browser window resize to update itself.
-		trackResize: true,
-
-		/* ARK: require brief interaction before handling zooming */
-		stallInteractions: true,
-		requiredInteractionTime: 30,
-		extraInteractionTime: 20
-		/* END ARK */
+		trackResize: true
 	},
 
 	initialize(id, options) { // (HTMLElement or String, Object)
