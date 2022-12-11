@@ -3,6 +3,10 @@ import {Handler} from '../../core/Handler.js';
 import * as DomEvent from '../../dom/DomEvent.js';
 
 /*
+ * Smooth zoom behaviour is based on Leaflet.SmoothWheelZoom by mutsuyuki.
+ */
+
+/*
  * L.Handler.ScrollWheelZoom is used by L.Map to enable mouse scroll wheel zoom on the map.
  */
 
@@ -30,7 +34,6 @@ Map.mergeOptions({
 export const ScrollWheelZoom = Handler.extend({
 	addHooks() {
 		DomEvent.on(this._map._container, 'wheel', this._onWheelScroll, this);
-
 		this._delta = 0;
 	},
 
@@ -39,18 +42,14 @@ export const ScrollWheelZoom = Handler.extend({
 	},
 
 	_onWheelScroll(e) {
-		const delta = DomEvent.getWheelDelta(e);
-
-		const debounce = this._map.options.wheelDebounceTime;
-
-		this._delta += delta;
-		this._lastMousePos = this._map.mouseEventToContainerPoint(e);
+		this._delta += DomEvent.getWheelDelta(e);
+		this._wheelMousePosition = this._map.mouseEventToContainerPoint(e);
 
 		if (!this._startTime) {
 			this._startTime = +new Date();
 		}
 
-		const left = Math.max(debounce - (+new Date() - this._startTime), 0);
+		const left = Math.max(this._map.options.wheelDebounceTime - (+new Date() - this._startTime), 0);
 
 		clearTimeout(this._timer);
 		this._timer = setTimeout(this._performZoom.bind(this), left);
@@ -59,28 +58,62 @@ export const ScrollWheelZoom = Handler.extend({
 	},
 
 	_performZoom() {
-		const map = this._map,
-		    zoom = map.getZoom(),
-		    snap = this._map.options.zoomSnap || 0;
+		const map = this._map;
 
-		map._stop(); // stop panning and fly animations if any
+		if (!this._isWheeling) {
+			this._isWheeling = true;
+			this._centrePoint = map.getSize()._divideBy(2);
+			this._moved = false;
 
-		// map the delta with a sigmoid function to -4..4 range leaning on -1..1
-		const d2 = this._delta / (this._map.options.wheelPxPerZoomLevel * 4),
-		    d3 = 4 * Math.log(2 / (1 + Math.exp(-Math.abs(d2)))) / Math.LN2,
-		    d4 = snap ? Math.ceil(d3 / snap) * snap : d3,
-		    delta = map._limitZoom(zoom + (this._delta > 0 ? d4 : -d4)) - zoom;
+			map._stop();
+			if (map._panAnim) {
+				map._panAnim.stop();
+			}
 
-		this._delta = 0;
-		this._startTime = null;
+			this._goalZoom = map.getZoom();
+			this._prevCenter = map.getCenter();
+			this._prevZoom = map.getZoom();
 
-		if (!delta) { return; }
-
-		if (map.options.scrollWheelZoom === 'center') {
-			map.setZoom(zoom + delta, {animate:false});
-		} else {
-			map.setZoomAround(this._lastMousePos, zoom + delta, {animate:false});
+			this._zoomAnimationId = requestAnimationFrame(this._updateWheelZoom.bind(this));
 		}
+
+		this._goalZoom += this._delta / (map.options.wheelPxPerZoomLevel * 4);
+		this._delta = 0;
+		if (this._goalZoom < map.getMinZoom() || this._goalZoom > map.getMaxZoom()) {
+			this._goalZoom = map._limitZoom(this._goalZoom);
+		}
+
+		clearTimeout(this._timeoutId);
+		this._timeoutId = setTimeout(this._onWheelEnd.bind(this), 200);
+	},
+
+	_onWheelEnd() {
+		this._isWheeling = false;
+		cancelAnimationFrame(this._zoomAnimationId);
+		this._map._moveEnd(true);
+	},
+
+	_updateWheelZoom() {
+		const map = this._map;
+
+		if ((!map.getCenter().equals(this._prevCenter)) || map.getZoom() !== this._prevZoom) {
+			return;
+		}
+
+		const zoom = Math.floor((map.getZoom() + (this._goalZoom - map.getZoom()) * 0.3) * 1000) / 1000,
+		    centreOffset = this._wheelMousePosition.subtract(this._centrePoint).multiplyBy(1 - 1 / this._map.getZoomScale(zoom)),
+		    centre = this._map.containerPointToLatLng(this._centrePoint.add(centreOffset));
+
+		if (!this._moved) {
+			map._moveStart(true, false);
+			this._moved = true;
+		}
+
+		map._move(centre, zoom);
+		this._prevCenter = map.getCenter();
+		this._prevZoom = map.getZoom();
+
+		this._zoomAnimationId = requestAnimationFrame(this._updateWheelZoom.bind(this));
 	}
 });
 
