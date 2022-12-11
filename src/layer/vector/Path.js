@@ -99,6 +99,8 @@ export const Path = Layer.extend({
 		return this;
 	},
 
+	_updatePreDraw() {},
+
 	// @method setStyle(style: Path options): this
 	// Changes the appearance of a Path based on the options in the `Path options` object.
 	setStyle(style) {

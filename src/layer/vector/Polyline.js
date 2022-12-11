@@ -262,9 +262,13 @@ export const Polyline = Path.extend({
 	_update() {
 		if (!this._map) { return; }
 
+		this._updatePreDraw();
+		this._updatePath();
+	},
+
+	_updatePreDraw() {
 		this._clipPoints();
 		this._simplifyPoints();
-		this._updatePath();
 	},
 
 	_updatePath() {
