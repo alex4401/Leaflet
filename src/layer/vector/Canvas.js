@@ -93,17 +93,14 @@ export const Canvas = Renderer.extend({
 	_updatePaths() {
 		if (this._postponeUpdatePaths) { return; }
 
-		// ARK: do not call _updatePath twice
-		/*
-		let layer;
-		*/
 		this._redrawBounds = null;
-		/*
+
+		// Run custom _updatePreDraw functions before redrawing the canvas. This way we can update polyline-based shapes without
+		// risking a path update call.
 		for (const id in this._layers) {
-			layer = this._layers[id];
-			layer._update();
+			this._layers[id]._updatePreDraw();
 		}
-		*/
+
 		this._redraw();
 	},
 
