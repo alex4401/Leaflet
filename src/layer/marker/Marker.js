@@ -1,5 +1,4 @@
 import {Layer} from '../Layer';
-import {IconDefault} from './Icon.Default';
 import * as Util from '../../core/Util';
 import {toLatLng as latLng} from '../../geo/LatLng';
 import {toPoint as point} from '../../geometry/Point';
@@ -29,7 +28,7 @@ export const Marker = Layer.extend({
 		// Icon instance to use for rendering the marker.
 		// See [Icon documentation](#L.Icon) for details on how to customize the marker icon.
 		// If not specified, a common instance of `L.Icon.Default` is used.
-		icon: new IconDefault(),
+		icon: null,
 
 		// Option inherited from "Interactive layer" abstract class
 		interactive: true,
