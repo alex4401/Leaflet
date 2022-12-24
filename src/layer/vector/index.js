@@ -8,3 +8,4 @@ export {Circle} from './Circle.js';
 export {Polyline} from './Polyline.js';
 export {Polygon} from './Polygon.js';
 export {Rectangle} from './Rectangle.js';
+export {CanvasIconMarker} from './CanvasIconMarker';

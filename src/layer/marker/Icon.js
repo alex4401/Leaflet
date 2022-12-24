@@ -86,6 +86,7 @@ export const Icon = Class.extend({
 
 	initialize(options) {
 		setOptions(this, options);
+		this._canvasSource = this._createImg(this._getIconUrl('icon'));
 	},
 
 	// @method createIcon(oldIcon?: HTMLElement): HTMLElement
