@@ -76,6 +76,7 @@ export const Icon = Class.extend({
 	options: {
 		popupAnchor: [0, 0],
 		tooltipAnchor: [0, 0],
+		useWithCanvas: false,
 
 		// @option crossOrigin: Boolean|String = false
 		// Whether the crossOrigin attribute will be added to the tiles.
@@ -86,7 +87,9 @@ export const Icon = Class.extend({
 
 	initialize(options) {
 		setOptions(this, options);
-		this._canvasSource = this._createImg(this._getIconUrl('icon'));
+		if (this.options.useWithCanvas) {
+			this._canvasSource = this._createImg(this._getIconUrl('icon'));
+		}
 	},
 
 	// @method createIcon(oldIcon?: HTMLElement): HTMLElement
