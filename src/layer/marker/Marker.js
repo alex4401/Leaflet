@@ -216,16 +216,11 @@ export const Marker = Layer.extend({
 	update() {
 
 		if (this._icon && this._map) {
-			const pos = this._map.latLngToLayerPoint(this._latlng).round();
-			this._setPos(pos);
-
-			const size = point(this.options.icon.options.iconSize)._multiplyBy(this._map.options.iconMarkerScale);
-			const anchor = size.divideBy(2);
-
-			this._icon.style.marginLeft = `${-anchor.x}px`;
-			this._icon.style.marginTop = `${-anchor.y}px`;
-			this._icon.style.width = `${this.options.icon.options.iconSize[0] * this._map.options.iconMarkerScale}px`;
-			this._icon.style.height = `${this.options.icon.options.iconSize[1] * this._map.options.iconMarkerScale}px`;
+			const size = point(this.options.icon.options.iconSize)._multiplyBy(this._map.options.iconMarkerScale)._round();
+			this._icon.style.width = `${size.x}px`;
+			this._icon.style.height = `${size.y}px`;
+			size._divideBy(2);
+			this._setPos(this._map.latLngToLayerPoint(this._latlng)._subtract(size)._round());
 		}
 
 		return this;
@@ -236,6 +231,8 @@ export const Marker = Layer.extend({
 		    classToAdd = `leaflet-zoom-${this._zoomAnimated ? 'animated' : 'hide'}`;
 
 		const icon = options.icon.createIcon(this._icon);
+		icon.style.marginLeft = null;
+		icon.style.marginTop = null;
 		let addIcon = false;
 
 		// if we're not reusing the icon, remove the old one and init new one
