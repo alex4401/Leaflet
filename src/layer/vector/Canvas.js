@@ -338,7 +338,12 @@ export const Canvas = Renderer.extend({
 		ctx.imageSmoothingEnabled = true;
 		ctx.imageSmoothingQuality = 'high';
 		ctx.globalAlpha = layer.opacityMult || 1;
+		ctx.shadowOffsetX = 0;
+		ctx.shadowOffsetY = 2;
+		ctx.shadowColor = 'rgba(34, 46, 53, 0.3)';
+		ctx.shadowBlur = 8;
 		ctx.drawImage(icon._canvasSource, p.x - layer._halfSize.x, p.y - layer._halfSize.y, layer._size.x, layer._size.y);
+		ctx.shadowColor = null;
 	},
 
 	_fillStroke(ctx, layer) {
