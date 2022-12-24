@@ -331,6 +331,24 @@ export const Canvas = Renderer.extend({
 		this._fillStroke(ctx, layer);
 	},
 
+	_updateImage(layer) {
+		if (!this._drawing) { return; }
+		this._drawImage(layer);
+	},
+
+	_drawImage(layer) {
+		if (layer._empty() || layer._map === null) { return; }
+
+		const p = layer._point,
+		    ctx = this._ctx,
+		    icon = layer.options.icon;
+
+		ctx.imageSmoothingEnabled = true;
+		ctx.imageSmoothingQuality = 'high';
+		ctx.globalAlpha = layer.opacityMult || 1;
+		ctx.drawImage(icon._canvasSource, p.x - layer._halfSize.x, p.y - layer._halfSize.y, layer._size.x, layer._size.y);
+	},
+
 	_fillStroke(ctx, layer) {
 		const options = layer.options;
 
