@@ -184,7 +184,7 @@ describe('Canvas', () => {
 		});
 	});
 
-	it('removes vector on next animation frame', function (done) {
+	it('removes vector on next animation frame', (done) => {
 		const layer = L.circle([0, 0]).addTo(map),
 		    layerId = L.stamp(layer),
 		    canvas = map.getRenderer(layer);
@@ -193,13 +193,13 @@ describe('Canvas', () => {
 
 		map.removeLayer(layer);
 		// Defer check due to how Canvas renderer manages layer removal.
-		L.Util.requestAnimFrame(() => {
+		requestAnimationFrame(() => {
 			expect(canvas._layers).to.not.have.property(layerId);
 			done();
-		}, this);
+		});
 	});
 
-	it('adds vectors even if they have been removed just before', function (done) {
+	it('adds vectors even if they have been removed just before', (done) => {
 		const layer = L.circle([0, 0]).addTo(map),
 		    layerId = L.stamp(layer),
 		    canvas = map.getRenderer(layer);
@@ -210,10 +210,10 @@ describe('Canvas', () => {
 		map.addLayer(layer);
 		expect(canvas._layers).to.have.property(layerId);
 		// Re-perform a deferred check due to how Canvas renderer manages layer removal.
-		L.Util.requestAnimFrame(() => {
+		requestAnimationFrame(() => {
 			expect(canvas._layers).to.have.property(layerId);
 			done();
-		}, this);
+		});
 	});
 
 	describe('#bringToBack', () => {
@@ -253,7 +253,7 @@ describe('Canvas', () => {
 			L.polygon(latLngs).addTo(map);
 			map.remove();
 			map = null;
-			L.Util.requestAnimFrame(() => { done(); });
+			requestAnimationFrame(() => { done(); });
 		});
 
 		it('can remove renderer without errors', (done) => {
@@ -267,7 +267,7 @@ describe('Canvas', () => {
 			canvas.remove();
 			map.remove();
 			map = null;
-			L.Util.requestAnimFrame(() => { done(); });
+			requestAnimationFrame(() => { done(); });
 		});
 	});
 });
