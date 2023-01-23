@@ -4,7 +4,9 @@ describe('DomEvent.DoubleTapSpec.js', () => {
 	beforeEach(() => {
 		container = createContainer();
 
-		clock = sinon.useFakeTimers();
+		clock = sinon.useFakeTimers({
+			toFake: ['setTimeout', 'clearTimeout', 'Date']
+		});
 		clock.tick(1000);
 		spy = sinon.spy();
 		L.DomEvent.on(container, 'dblclick', spy);

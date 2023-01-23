@@ -1,6 +1,10 @@
 describe('GridLayer', () => {
 	let container, map;
 
+	const createClock = () => sinon.useFakeTimers({
+		toFake: ['setTimeout', 'clearTimeout', 'Date']
+	});
+
 	beforeEach(() => {
 		container = createContainer();
 		map = L.map(container);
@@ -76,7 +80,7 @@ describe('GridLayer', () => {
 		let clock;
 
 		beforeEach(() => {
-			clock = sinon.useFakeTimers();
+			clock = createClock();
 		});
 
 		afterEach(() => {
@@ -366,7 +370,7 @@ describe('GridLayer', () => {
 		let clock, grid, counts;
 
 		beforeEach(() => {
-			clock = sinon.useFakeTimers();
+			clock = createClock();
 
 			grid = L.gridLayer({
 				attribution: 'Grid Layer',
@@ -517,7 +521,7 @@ describe('GridLayer', () => {
 		let clock, grid, counts;
 
 		beforeEach(() => {
-			clock = sinon.useFakeTimers();
+			clock = createClock();
 
 			grid = L.gridLayer({
 				attribution: 'Grid Layer',
@@ -826,7 +830,7 @@ describe('GridLayer', () => {
 		let clock, grid, counts;
 
 		beforeEach(() => {
-			clock = sinon.useFakeTimers();
+			clock = createClock();
 
 			grid = L.gridLayer({
 				attribution: 'Grid Layer',
