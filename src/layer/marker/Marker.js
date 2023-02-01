@@ -285,7 +285,7 @@ export const Marker = Layer.extend({
 		this._shadow = newShadow;
 
 
-		if (options.opacity < 1) {
+		if (options.opacity < 1 || this.opacityMult > 0) {
 			this._updateOpacity();
 		}
 
