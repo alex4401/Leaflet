@@ -213,8 +213,13 @@ export const Marker = Layer.extend({
 			const size = point(this.options.icon.options.iconSize)._multiplyBy(this._map.options.iconMarkerScale)._round();
 			this._icon.style.width = `${size.x}px`;
 			this._icon.style.height = `${size.y}px`;
-			size._divideBy(2);
-			this._setPos(this._map.latLngToLayerPoint(this._latlng)._subtract(size)._round());
+			let anchor = size;
+			if (this.options.icon.options.anchorToBottom) {
+				anchor = point([anchor.x / 2, size.y]);
+			} else {
+				anchor._divideBy(2);
+			}
+			this._setPos(this._map.latLngToLayerPoint(this._latlng)._subtract(anchor)._round());
 		}
 
 		return this;
