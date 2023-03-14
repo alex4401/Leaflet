@@ -5,7 +5,6 @@ import {Layer} from './Layer.js';
 import * as DomUtil from '../dom/DomUtil.js';
 import * as DomEvent from '../dom/DomEvent.js';
 import * as Util from '../core/Util.js';
-import {FeatureGroup} from './FeatureGroup.js';
 
 /*
  * @class Tooltip
@@ -218,16 +217,6 @@ export const Tooltip = DivOverlay.extend({
 
 });
 
-// @namespace Tooltip
-// @factory L.tooltip(options?: Tooltip options, source?: Layer)
-// Instantiates a `Tooltip` object given an optional `options` object that describes its appearance and location and an optional `source` object that is used to tag the tooltip with a reference to the Layer to which it refers.
-// @alternative
-// @factory L.tooltip(latlng: LatLng, options?: Tooltip options)
-// Instantiates a `Tooltip` object given `latlng` where the tooltip will open and an optional `options` object that describes its appearance and location.
-export const tooltip = function (options, source) {
-	return new Tooltip(options, source);
-};
-
 // @namespace Map
 // @section Methods for Layers and Controls
 Map.include({
@@ -330,9 +319,9 @@ Layer.include({
 	// Opens the bound tooltip at the specified `latlng` or at the default tooltip anchor if no `latlng` is passed.
 	openTooltip(latlng) {
 		if (this._tooltip) {
-			if (!(this instanceof FeatureGroup)) {
-				this._tooltip._source = this;
-			}
+			// if (!(this instanceof FeatureGroup)) {
+			//	this._tooltip._source = this;
+			// }
 			if (this._tooltip._prepareOpen(latlng)) {
 				// open the tooltip on the map
 				this._tooltip.openOn(this._map);

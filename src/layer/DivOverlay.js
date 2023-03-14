@@ -1,6 +1,5 @@
 import {Map} from '../map/Map.js';
 import {Layer} from './Layer.js';
-import {FeatureGroup} from './FeatureGroup.js';
 import * as Util from '../core/Util.js';
 import {toLatLng, LatLng} from '../geo/LatLng.js';
 import {toPoint} from '../geometry/Point.js';
@@ -231,9 +230,10 @@ export const DivOverlay = Layer.extend({
 
 	// prepare bound overlay to open: update latlng pos / content source (for FeatureGroup)
 	_prepareOpen(latlng) {
-		let source = this._source;
+		const source = this._source;
 		if (!source._map) { return false; }
 
+		/*
 		if (source instanceof FeatureGroup) {
 			source = null;
 			const layers = this._source._layers;
@@ -248,6 +248,7 @@ export const DivOverlay = Layer.extend({
 			// set overlay source to this layer
 			this._source = source;
 		}
+		*/
 
 		if (!latlng) {
 			if (source.getCenter) {

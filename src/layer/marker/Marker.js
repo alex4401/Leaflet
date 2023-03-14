@@ -1,5 +1,4 @@
 import {Layer} from '../Layer.js';
-import {IconDefault} from './Icon.Default.js';
 import * as Util from '../../core/Util.js';
 import {toLatLng as latLng} from '../../geo/LatLng.js';
 import {toPoint as point} from '../../geometry/Point.js';
@@ -29,7 +28,7 @@ export const Marker = Layer.extend({
 		// Icon instance to use for rendering the marker.
 		// See [Icon documentation](#L.Icon) for details on how to customize the marker icon.
 		// If not specified, a common instance of `L.Icon.Default` is used.
-		icon: new IconDefault(),
+		icon: null,
 
 		// Option inherited from "Interactive layer" abstract class
 		interactive: true,
@@ -67,10 +66,6 @@ export const Marker = Layer.extend({
 		// @option pane: String = 'markerPane'
 		// `Map pane` where the markers icon will be added.
 		pane: 'markerPane',
-
-		// @option shadowPane: String = 'shadowPane'
-		// `Map pane` where the markers shadow will be added.
-		shadowPane: 'shadowPane',
 
 		// @option bubblingMouseEvents: Boolean = false
 		// When `true`, a mouse event on this marker will trigger the same event on the map
@@ -135,7 +130,6 @@ export const Marker = Layer.extend({
 		}
 
 		this._removeIcon();
-		this._removeShadow();
 	},
 
 	getEvents() {
@@ -251,20 +245,6 @@ export const Marker = Layer.extend({
 			DomEvent.on(icon, 'focus', this._panOnFocus, this);
 		}
 
-		const newShadow = options.icon.createShadow(this._shadow);
-		let addShadow = false;
-
-		if (newShadow !== this._shadow) {
-			this._removeShadow();
-			addShadow = true;
-		}
-
-		if (newShadow) {
-			newShadow.classList.add(classToAdd);
-			newShadow.alt = '';
-		}
-		this._shadow = newShadow;
-
 
 		if (options.opacity < 1) {
 			this._updateOpacity();
@@ -275,9 +255,6 @@ export const Marker = Layer.extend({
 			this.getPane().appendChild(this._icon);
 		}
 		this._initInteraction();
-		if (newShadow && addShadow) {
-			this.getPane(options.shadowPane).appendChild(this._shadow);
-		}
 	},
 
 	_removeIcon() {
@@ -298,21 +275,10 @@ export const Marker = Layer.extend({
 		this._icon = null;
 	},
 
-	_removeShadow() {
-		if (this._shadow) {
-			this._shadow.remove();
-		}
-		this._shadow = null;
-	},
-
 	_setPos(pos) {
 
 		if (this._icon) {
 			DomUtil.setPosition(this._icon, pos);
-		}
-
-		if (this._shadow) {
-			DomUtil.setPosition(this._shadow, pos);
 		}
 
 		this._zIndex = pos.y + this.options.zIndexOffset;
@@ -372,10 +338,6 @@ export const Marker = Layer.extend({
 		if (this._icon) {
 			this._icon.style.opacity = opacity;
 		}
-
-		if (this._shadow) {
-			this._shadow.style.opacity = opacity;
-		}
 	},
 
 	_bringToFront() {
@@ -408,12 +370,3 @@ export const Marker = Layer.extend({
 		return this.options.icon.options.tooltipAnchor;
 	}
 });
-
-
-// factory L.marker(latlng: LatLng, options? : Marker options)
-
-// @factory L.marker(latlng: LatLng, options? : Marker options)
-// Instantiates a Marker object given a geographical point and optionally an options object.
-export function marker(latlng, options) {
-	return new Marker(latlng, options);
-}

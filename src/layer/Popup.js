@@ -5,7 +5,6 @@ import {Point, toPoint} from '../geometry/Point.js';
 import {Map} from '../map/Map.js';
 import {Layer} from './Layer.js';
 import {Path} from './vector/Path.js';
-import {FeatureGroup} from './FeatureGroup.js';
 
 /*
  * @class Popup
@@ -321,16 +320,6 @@ export const Popup = DivOverlay.extend({
 
 });
 
-// @namespace Popup
-// @factory L.popup(options?: Popup options, source?: Layer)
-// Instantiates a `Popup` object given an optional `options` object that describes its appearance and location and an optional `source` object that is used to tag the popup with a reference to the Layer to which it refers.
-// @alternative
-// @factory L.popup(latlng: LatLng, options?: Popup options)
-// Instantiates a `Popup` object given `latlng` where the popup will open and an optional `options` object that describes its appearance and location.
-export const popup = function (options, source) {
-	return new Popup(options, source);
-};
-
 
 /* @namespace Map
  * @section Interaction Options
@@ -425,9 +414,9 @@ Layer.include({
 	// Opens the bound popup at the specified `latlng` or at the default popup anchor if no `latlng` is passed.
 	openPopup(latlng) {
 		if (this._popup) {
-			if (!(this instanceof FeatureGroup)) {
-				this._popup._source = this;
-			}
+			// if (!(this instanceof FeatureGroup)) {
+			//	this._popup._source = this;
+			// }
 			if (this._popup._prepareOpen(latlng || this._latlng)) {
 				// open the popup on the map
 				this._popup.openOn(this._map);

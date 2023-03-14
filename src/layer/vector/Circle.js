@@ -3,7 +3,6 @@ import {Path} from './Path.js';
 import * as Util from '../../core/Util.js';
 import {toLatLng} from '../../geo/LatLng.js';
 import {LatLngBounds} from '../../geo/LatLngBounds.js';
-import {Earth} from '../../geo/crs/CRS.Earth.js';
 
 
 /*
@@ -67,11 +66,10 @@ export const Circle = CircleMarker.extend({
 
 	_project() {
 
-		const lng = this._latlng.lng,
-		    lat = this._latlng.lat,
-		    map = this._map,
+		const map = this._map,
 		    crs = map.options.crs;
 
+		/*
 		if (crs.distance === Earth.distance) {
 			const d = Math.PI / 180,
 			      latR = (this._mRadius / Earth.R) / d,
@@ -91,23 +89,15 @@ export const Circle = CircleMarker.extend({
 			this._radiusY = p.y - top.y;
 
 		} else {
-			const latlng2 = crs.unproject(crs.project(this._latlng).subtract([this._mRadius, 0]));
+		*/
+		const latlng2 = crs.unproject(crs.project(this._latlng).subtract([this._mRadius, 0]));
 
-			this._point = map.latLngToLayerPoint(this._latlng);
-			this._radius = this._point.x - map.latLngToLayerPoint(latlng2).x;
+		this._point = map.latLngToLayerPoint(this._latlng);
+		this._radius = this._point.x - map.latLngToLayerPoint(latlng2).x;
+		/*
 		}
+		*/
 
 		this._updateBounds();
 	}
 });
-
-// @factory L.circle(latlng: LatLng, options?: Circle options)
-// Instantiates a circle object given a geographical point, and an options object
-// which contains the circle radius.
-// @alternative
-// @factory L.circle(latlng: LatLng, radius: Number, options?: Circle options)
-// Obsolete way of instantiating a circle, for compatibility with 0.7.x code.
-// Do not use in new applications or plugins.
-export function circle(latlng, options, legacyOptions) {
-	return new Circle(latlng, options, legacyOptions);
-}
