@@ -53,7 +53,7 @@ export const CanvasIconMarker = Path.extend({
 	},
 
 	_project() {
-		this._size = point(this.options.icon.options.iconSize)._multiplyBy(this.getDisplayScale())._round();
+		this._size = this.getScaledSize();
 		this._halfSize = this._size.divideBy(2)._round();
 		this._point = this._map.latLngToLayerPoint(this._latlng);
 		this._updateBounds();
@@ -66,6 +66,10 @@ export const CanvasIconMarker = Path.extend({
 				(this.options.zoomScaleFactor || mapOptions.markerZoomScaleFactor);
 		}
 		return mapOptions.iconMarkerScale;
+	},
+
+	getScaledSize() {
+		return point(this.options.icon.options.iconSize)._multiplyBy(this.getDisplayScale())._round();
 	},
 
 	_updateBounds() {
@@ -99,5 +103,13 @@ export const CanvasIconMarker = Path.extend({
 	// Needed by the `Canvas` renderer for interactivity
 	_containsPoint(p) {
 		return this._pxBounds.contains(p);
+	},
+
+	_getPopupAnchor() {
+		const size = this.getScaledSize();
+		if (this.options.icon.options.anchorToBottom) {
+			return [size.x / 2, -size.y];
+		}
+		return [size.x / 2, -size.y / 2];
 	}
 });

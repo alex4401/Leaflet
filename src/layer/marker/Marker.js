@@ -207,10 +207,18 @@ export const Marker = Layer.extend({
 		return this._icon;
 	},
 
+	getDisplayScale() {
+		return this._map.options.iconMarkerScale;
+	},
+
+	getScaledSize() {
+		return point(this.options.icon.options.iconSize)._multiplyBy(this.getDisplayScale())._round();
+	},
+
 	update() {
 
 		if (this._icon && this._map) {
-			const size = point(this.options.icon.options.iconSize)._multiplyBy(this._map.options.iconMarkerScale)._round();
+			const size = this.getScaledSize();
 			this._icon.style.width = `${size.x}px`;
 			this._icon.style.height = `${size.y}px`;
 			let anchor = size;
@@ -388,7 +396,8 @@ export const Marker = Layer.extend({
 	},
 
 	_getPopupAnchor() {
-		return this.options.icon.options.popupAnchor;
+		const size = this.getScaledSize();
+		return [size.x / 5, -size.y / 2];
 	},
 
 	_getTooltipAnchor() {

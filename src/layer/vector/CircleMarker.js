@@ -121,6 +121,6 @@ export const CircleMarker = Path.extend({
 	},
 
 	_getPopupAnchor() {
-		return [this._radius / 2, this._radius / 2];
+		return [this._radius / 2, -this._radius / 2];
 	}
 });
