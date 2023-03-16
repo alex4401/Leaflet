@@ -207,11 +207,9 @@ export const Popup = DivOverlay.extend({
 		this._tip = DomUtil.create('div', `${prefix}-tip`, this._tipContainer);
 
 		if (this.options.closeButton) {
-			const closeButton = this._closeButton = DomUtil.create('a', `${prefix}-close-button`, container);
-			closeButton.setAttribute('role', 'button'); // overrides the implicit role=link of <a> elements #7399
+			const closeButton = this._closeButton = DomUtil.create('button', `${prefix}-close-button`, container);
 			closeButton.setAttribute('aria-label', this.options.closeButtonLabel);
 
-			closeButton.href = '#close';
 			closeButton.innerHTML = '<span aria-hidden="true">&#215;</span>';
 
 			DomEvent.on(closeButton, 'click', function (ev) {
