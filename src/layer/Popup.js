@@ -116,7 +116,9 @@ export const Popup = DivOverlay.extend({
 
 		// @option className: String = ''
 		// A custom CSS class name to assign to the popup.
-		className: ''
+		className: '',
+
+		tooltip: false
 	},
 
 	// @namespace Popup
@@ -178,6 +180,22 @@ export const Popup = DivOverlay.extend({
 		}
 	},
 
+	onPromoted() {},
+
+	setEphemeral(value) {
+		this._isEphemeral = value;
+		this._updateEphemeralState();
+		if (!value) {
+			this.onPromoted();
+		}
+	},
+
+	_updateEphemeralState() {
+		if (this._container) {
+			this._container.dataset.ephemeral = this._isEphemeral;
+		}
+	},
+
 	getEvents() {
 		const events = DivOverlay.prototype.getEvents.call(this);
 
@@ -217,6 +235,8 @@ export const Popup = DivOverlay.extend({
 				this.close();
 			}, this);
 		}
+
+		this._updateEphemeralState();
 	},
 
 	_updateLayout() {
@@ -386,6 +406,12 @@ Layer.include({
 				remove: this.closePopup,
 				move: this._movePopup
 			});
+			if (this._popup.options.tooltip) {
+				this.on({
+					mouseover: this._openEphemeralPopup,
+					mouseout: this._closeEphemeralPopup
+				});
+			}
 			this._popupHandlersAdded = true;
 		}
 
@@ -470,6 +496,13 @@ Layer.include({
 		DomEvent.stop(e);
 
 		const target = e.layer || e.target;
+		if (this._popup.options.tooltip) {
+			if (this._popup._source === target && this._popup._isEphemeral && this._popup.isOpen()) {
+				this._popup.setEphemeral(false);
+				return;
+			}
+			this._popup.setEphemeral(e.type === 'mouseover');
+		}
 		if (this._popup._source === target && !(target instanceof Path)) {
 			// treat it like a marker and figure out
 			// if we should toggle it open/closed
@@ -484,6 +517,16 @@ Layer.include({
 		this.openPopup(e.latlng);
 	},
 
+	_openEphemeralPopup(e) {
+		if (!this._popup || !this._map || this._popup.isOpen()) {
+			return;
+		}
+		this._popup._ephemeralTimeout = setTimeout(() => {
+			this._popup._ephemeralTimeout = null;
+			this._openPopup(e);
+		}, 100);
+	},
+
 	_movePopup(e) {
 		this._popup.setLatLng(e.latlng);
 	},
@@ -491,6 +534,18 @@ Layer.include({
 	_onKeyPress(e) {
 		if (e.originalEvent.code === 'Enter') {
 			this._openPopup(e);
+		}
+	},
+
+	_closeEphemeralPopup() {
+		if (!this._popup) {
+			return;
+		}
+		if (this._popup._ephemeralTimeout !== null) {
+			clearTimeout(this._popup._ephemeralTimeout);
+			this._popup._ephemeralTimeout = null;
+		} else if (this._popup._isEphemeral) {
+			this._popup.close();
 		}
 	}
 });
