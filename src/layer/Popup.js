@@ -191,8 +191,12 @@ export const Popup = DivOverlay.extend({
 	},
 
 	_updateEphemeralState() {
+		this._targetOpacity = this._isEphemeral ? 0.9 : 1;
 		if (this._container) {
 			this._container.dataset.ephemeral = this._isEphemeral;
+			if (this._map && this._map._fadeAnimated) {
+				this._container.style.opacity = this._targetOpacity;
+			}
 		}
 	},
 

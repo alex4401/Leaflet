@@ -112,7 +112,7 @@ export const DivOverlay = Layer.extend({
 		this.update();
 
 		if (map._fadeAnimated) {
-			this._container.style.opacity = 1;
+			this._container.style.opacity = this._targetOpacity !== null ? this._targetOpacity : 1;
 		}
 
 		this.bringToFront();
