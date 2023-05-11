@@ -280,7 +280,7 @@ export const Popup = DivOverlay.extend({
 	},
 
 	_adjustPan() {
-		if (!this.options.autoPan) { return; }
+		if (!this.options.autoPan || this._isEphemeral) { return; }
 		if (this._map._panAnim) { this._map._panAnim.stop(); }
 
 		// We can endlessly recurse if keepInView is set and the view resets.
@@ -503,6 +503,7 @@ Layer.include({
 		if (this._popup.options.tooltip) {
 			if (this._popup._source === target && this._popup._isEphemeral && this._popup.isOpen()) {
 				this._popup.setEphemeral(false);
+				this._popup._adjustPan();
 				return;
 			}
 			this._popup.setEphemeral(e.type === 'mouseover');
