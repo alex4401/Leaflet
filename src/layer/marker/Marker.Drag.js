@@ -126,7 +126,7 @@ export const MarkerDrag = Handler.extend({
 	_onDrag(e) {
 		const marker = this._marker,
 		    shadow = marker._shadow,
-		    iconPos = DomUtil.getPosition(marker._icon),
+		    iconPos = DomUtil.getPosition(marker._icon)._add(marker.getIconAnchor()),
 		    latlng = marker._map.layerPointToLatLng(iconPos);
 
 		// update shadow position

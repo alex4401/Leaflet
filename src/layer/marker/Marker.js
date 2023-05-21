@@ -215,18 +215,21 @@ export const Marker = Layer.extend({
 		return point(this.options.icon.options.iconSize)._multiplyBy(this.getDisplayScale())._round();
 	},
 
+	getIconAnchor() {
+		const size = this.getScaledSize();
+		if (this.options.icon.options.anchorToBottom) {
+			return point([size.x / 2, size.y]);
+		}
+		return size._divideBy(2);
+	},
+
 	update() {
 
 		if (this._icon && this._map) {
-			const size = this.getScaledSize();
+			const size = this.getScaledSize(),
+			anchor = this.getIconAnchor();
 			this._icon.style.width = `${size.x}px`;
 			this._icon.style.height = `${size.y}px`;
-			let anchor = size;
-			if (this.options.icon.options.anchorToBottom) {
-				anchor = point([anchor.x / 2, size.y]);
-			} else {
-				anchor._divideBy(2);
-			}
 			this._setPos(this._map.latLngToLayerPoint(this._latlng)._subtract(anchor)._round());
 		}
 
