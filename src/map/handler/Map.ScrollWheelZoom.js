@@ -19,10 +19,10 @@ Map.mergeOptions({
 	// it will zoom to the center of the view regardless of where the mouse was.
 	scrollWheelZoom: true,
 
-	// @option wheelDebounceTime: Number = 40
+	// @option wheelDebounceTime: Number = 60
 	// Limits the rate at which a wheel can fire (in milliseconds). By default
-	// user can't zoom via wheel more often than once per 40 ms.
-	wheelDebounceTime: 40,
+	// user can't zoom via wheel more often than once per 60 ms.
+	wheelDebounceTime: 60,
 
 	// @option wheelPxPerZoomLevel: Number = 60
 	// How many scroll pixels (as reported by [L.DomEvent.getWheelDelta](#domevent-getwheeldelta))
