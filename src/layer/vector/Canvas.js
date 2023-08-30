@@ -45,6 +45,11 @@ export const Canvas = Renderer.extend({
 		tolerance: 0
 	},
 
+	initialize(options) {
+		Renderer.prototype.initialize.call(this, options);
+		this._drawOrder = [];
+	},
+
 	getEvents() {
 		const events = Renderer.prototype.getEvents.call(this);
 		events.viewprereset = this._onViewPreReset;
@@ -132,15 +137,7 @@ export const Canvas = Renderer.extend({
 	_initPath(layer) {
 		this._updateDashArray(layer);
 		this._layers[Util.stamp(layer)] = layer;
-
-		const order = layer._order = {
-			layer,
-			prev: this._drawLast,
-			next: null
-		};
-		if (this._drawLast) { this._drawLast.next = order; }
-		this._drawLast = order;
-		this._drawFirst = this._drawFirst || this._drawLast;
+		this._drawOrder.push(layer);
 	},
 
 	_addPath(layer) {
@@ -148,22 +145,11 @@ export const Canvas = Renderer.extend({
 	},
 
 	_removePath(layer) {
-		const order = layer._order;
-		const next = order.next;
-		const prev = order.prev;
+		const drawIndex = this._drawOrder.indexOf(layer);
 
-		if (next) {
-			next.prev = prev;
-		} else {
-			this._drawLast = prev;
+		if (drawIndex >= 0) {
+			this._drawOrder.splice(drawIndex, 1);
 		}
-		if (prev) {
-			prev.next = next;
-		} else {
-			this._drawFirst = next;
-		}
-
-		delete layer._order;
 
 		delete this._layers[Util.stamp(layer)];
 
@@ -248,9 +234,10 @@ export const Canvas = Renderer.extend({
 	},
 
 	_draw() {
-		let layer;
 		const bounds = this._redrawBounds;
+
 		this._ctx.save();
+
 		if (bounds) {
 			const size = bounds.getSize();
 			this._ctx.beginPath();
@@ -260,8 +247,7 @@ export const Canvas = Renderer.extend({
 
 		this._drawing = true;
 
-		for (let order = this._drawFirst; order; order = order.next) {
-			layer = order.layer;
+		for (const layer of this._drawOrder) {
 			if (!bounds || (layer._pxBounds && layer._pxBounds.intersects(bounds))) {
 				layer._updatePath();
 			}
@@ -374,16 +360,16 @@ export const Canvas = Renderer.extend({
 
 	_onClick(e) {
 		const point = this._map.mouseEventToLayerPoint(e);
-		let layer, clickedLayer;
+		let clickedLayer;
 
-		for (let order = this._drawFirst; order; order = order.next) {
-			layer = order.layer;
+		for (const layer of this._drawOrder) {
 			if (layer.options.interactive && layer._containsPoint(point)) {
 				if (!(e.type === 'click' || e.type === 'preclick') || !this._map._draggableMoved(layer)) {
 					clickedLayer = layer;
 				}
 			}
 		}
+
 		this._fireEvent(clickedLayer ? [clickedLayer] : false, e);
 	},
 
@@ -411,10 +397,9 @@ export const Canvas = Renderer.extend({
 			return;
 		}
 
-		let layer, candidateHoveredLayer;
+		let candidateHoveredLayer;
 
-		for (let order = this._drawFirst; order; order = order.next) {
-			layer = order.layer;
+		for (const layer of this._drawOrder) {
 			if (layer.options.interactive && layer._containsPoint(point)) {
 				candidateHoveredLayer = layer;
 			}
@@ -443,63 +428,38 @@ export const Canvas = Renderer.extend({
 	},
 
 	_bringToFront(layer) {
-		const order = layer._order;
+		const
+		    order = this._drawOrder,
+		    index = order.indexOf(layer);
 
-		if (!order) { return; }
-
-		const next = order.next;
-		const prev = order.prev;
-
-		if (next) {
-			next.prev = prev;
-		} else {
-			// Already last
+		if (index < 0 || index === (order.length - 1)) {
+			// Path is not present, or is already at front (last to draw)
 			return;
 		}
-		if (prev) {
-			prev.next = next;
-		} else if (next) {
-			// Update first entry unless this is the
-			// single entry
-			this._drawFirst = next;
-		}
 
-		order.prev = this._drawLast;
-		this._drawLast.next = order;
-
-		order.next = null;
-		this._drawLast = order;
+		order.splice(index, 1);
+		order.push(layer);
 
 		this._requestRedraw(layer);
 	},
 
 	_bringToBack(layer) {
-		const order = layer._order;
+		const
+		    order = this._drawOrder,
+		    index = order.indexOf(layer);
 
-		if (!order) { return; }
-
-		const next = order.next;
-		const prev = order.prev;
-
-		if (prev) {
-			prev.next = next;
-		} else {
-			// Already first
+		if (index < 1) {
+			// Path is not present, or is already at back (first to draw)
 			return;
 		}
-		if (next) {
-			next.prev = prev;
-		} else if (prev) {
-			// Update last entry unless this is the
-			// single entry
-			this._drawLast = prev;
+
+		// Shift all items before/behind the path up one spot
+		for (let i = 0; i < index; ++i) {
+			order[i + 1] = order[i];
 		}
 
-		order.prev = null;
-
-		order.next = this._drawFirst;
-		this._drawFirst.prev = order;
-		this._drawFirst = order;
+		// Now insert the path at beginning so it draws before/behind everything else
+		order[0] = layer;
 
 		this._requestRedraw(layer);
 	}
