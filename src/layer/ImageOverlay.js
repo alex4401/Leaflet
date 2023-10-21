@@ -230,7 +230,7 @@ export const ImageOverlay = Layer.extend({
 		const scale = this._map.getZoomScale(e.zoom),
 		    offset = this._map._latLngBoundsToNewLayerBounds(this._bounds, e.zoom, e.center).min;
 
-		DomUtil.setTransform(this._image, offset, scale);
+		DomUtil.setTransform(this._image, offset, scale, this.options.angle);
 	},
 
 	_reset() {
@@ -240,7 +240,11 @@ export const ImageOverlay = Layer.extend({
 		        this._map.latLngToLayerPoint(this._bounds.getSouthEast())),
 		    size = bounds.getSize();
 
-		DomUtil.setPosition(image, bounds.min);
+		if (this.options.angle) {
+			DomUtil.setPosition(image, bounds.min, this.options.angle);
+		} else {
+			DomUtil.setPosition(image, bounds.min);
+		}
 
 		image.style.width  = `${size.x + this.options.antiAliasing}px`;
 		image.style.height = `${size.y + this.options.antiAliasing}px`;
