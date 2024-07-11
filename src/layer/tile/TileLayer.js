@@ -166,6 +166,9 @@ export const TileLayer = GridLayer.extend({
 
 		tile.src = this.getTileUrl(coords);
 
+		// Add native lazyloading
+		tile.loading = "lazy";
+
 		return tile;
 	},
 

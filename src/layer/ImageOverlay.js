@@ -194,6 +194,8 @@ export const ImageOverlay = Layer.extend({
 		const img = this._image = wasElementSupplied ? this._url : DomUtil.create('img');
 
 		img.classList.add('leaflet-image-layer');
+		// Add native lazyloading
+		img.loading = "lazy";
 		if (this._zoomAnimated) { img.classList.add('leaflet-zoom-animated'); }
 		if (this.options.className) { img.classList.add(...Util.splitWords(this.options.className)); }
 
