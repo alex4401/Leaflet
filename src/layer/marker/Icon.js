@@ -152,7 +152,8 @@ export const Icon = Class.extend({
 
 	_createImg(src, el) {
 		el = el || document.createElement('img');
-		el.src = src;// Add native lazyloading
+		el.src = src;
+		// Add native lazyloading
 		el.loading = "lazy";
 		return el;
 	},
