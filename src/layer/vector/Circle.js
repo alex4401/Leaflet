@@ -68,6 +68,10 @@ export const Circle = CircleMarker.extend({
 
 	setStyle: Path.prototype.setStyle,
 
+	_updatePath() {
+		this._renderer._updateCircle(this);
+	},
+
 	_project() {
 
 		const map = this._map,
