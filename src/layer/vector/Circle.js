@@ -39,6 +39,10 @@ export const Circle = CircleMarker.extend({
 		this._mRadius = this.options.radius;
 	},
 
+	getDisplayScale() {
+		return 1;
+	},
+
 	// @method setRadius(radius: Number): this
 	// Sets the radius of a circle. Units are in meters.
 	setRadius(radius) {
