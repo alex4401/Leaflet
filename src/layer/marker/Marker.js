@@ -208,7 +208,7 @@ export const Marker = Layer.extend({
 	},
 
 	getDisplayScale() {
-		return this._map.options.iconMarkerScale;
+		return this.options.static ? 1 : this._map.options.iconMarkerScale;
 	},
 
 	getScaledSize() {
