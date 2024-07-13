@@ -10,4 +10,5 @@ export {Popup} from './Popup.js';
 export {Tooltip} from './Tooltip.js';
 
 export * from './marker/index.js';
+export * from './tile/index.js';
 export * from './vector/index.js';
