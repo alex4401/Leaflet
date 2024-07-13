@@ -31,6 +31,7 @@ export const CircleMarker = Path.extend({
 	initialize(latlng, options) {
 		Util.setOptions(this, options);
 		this._latlng = toLatLng(latlng);
+		this._radius = this.options.radius;
 	},
 
 	// @method setLatLng(latLng: LatLng): this
@@ -55,6 +56,7 @@ export const CircleMarker = Path.extend({
 	// Sets the radius of a circle marker. Units are in pixels.
 	setRadius(radius) {
 		this.options.radius = this._radius = radius;
+		this._renderRadius = this._radius * this.getDisplayScale();
 		return this.redraw();
 	},
 
@@ -92,8 +94,7 @@ export const CircleMarker = Path.extend({
 	},
 
 	_updateBounds() {
-		this._radius = this.options.radius * this.getDisplayScale();
-		const r = this._radius,
+		const r = this._radius * this.getDisplayScale(),
 		    r2 = this._radiusY || r,
 		    w = this._clickTolerance(),
 		    p = [r + w, r2 + w];
@@ -107,7 +108,7 @@ export const CircleMarker = Path.extend({
 	},
 
 	_updatePath() {
-		this._radius = this.options.radius * this.getDisplayScale();
+		this._renderRadius = this._radius * this.getDisplayScale();
 		this._renderer._updateCircle(this);
 	},
 
@@ -117,7 +118,7 @@ export const CircleMarker = Path.extend({
 
 	// Needed by the `Canvas` renderer for interactivity
 	_containsPoint(p) {
-		return p.distanceTo(this._point) <= this._radius + this._clickTolerance();
+		return p.distanceTo(this._point) <= this._renderRadius + this._clickTolerance();
 	},
 
 	_getPopupAnchor() {

@@ -3,6 +3,7 @@ import {Path} from './Path.js';
 import * as Util from '../../core/Util.js';
 import {toLatLng} from '../../geo/LatLng.js';
 import {LatLngBounds} from '../../geo/LatLngBounds.js';
+import {Bounds} from '../../geometry/Bounds.js';
 
 
 /*
@@ -66,11 +67,25 @@ export const Circle = CircleMarker.extend({
 			this._map.layerPointToLatLng(this._point.add(half)));
 	},
 
-	setStyle: Path.prototype.setStyle,
+	_updateBounds() {
+		const r = this._radius * this.getDisplayScale(),
+		    r2 = this._radiusY || r,
+		    w = this._clickTolerance(),
+		    p = [r + w, r2 + w];
+		this._pxBounds = new Bounds(this._point.subtract(p), this._point.add(p));
+	},
+
+	_update() {
+		if (this._map) {
+			this._updatePath();
+		}
+	},
 
 	_updatePath() {
 		this._renderer._updateCircle(this);
 	},
+
+	setStyle: Path.prototype.setStyle,
 
 	_project() {
 
