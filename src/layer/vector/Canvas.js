@@ -291,7 +291,7 @@ export const Canvas = Renderer.extend({
 
 		const p = layer._point,
 		    ctx = this._ctx,
-		    r = Math.max(Math.round(layer._renderRadius || layer._radius), 1),
+		    r = Math.max(Math.round(layer._radius), 1),
 		    s = (Math.max(Math.round(layer._radiusY), 1) || r) / r;
 
 		if (s !== 1) {

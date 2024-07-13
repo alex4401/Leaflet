@@ -1,15 +1,14 @@
-import {CircleMarker} from './CircleMarker.js';
+import {CircleBase} from './CircleBase.js';
 import {Path} from './Path.js';
 import * as Util from '../../core/Util.js';
 import {toLatLng} from '../../geo/LatLng.js';
 import {LatLngBounds} from '../../geo/LatLngBounds.js';
-import {Bounds} from '../../geometry/Bounds.js';
 
 
 /*
  * @class Circle
  * @aka L.Circle
- * @inherits CircleMarker
+ * @inherits CircleBase
  *
  * A class for drawing circle overlays on a map. Extends `CircleMarker`.
  *
@@ -22,8 +21,7 @@ import {Bounds} from '../../geometry/Bounds.js';
  * ```
  */
 
-export const Circle = CircleMarker.extend({
-
+export const Circle = CircleBase.extend({
 	initialize(latlng, options, legacyOptions) {
 		if (typeof options === 'number') {
 			// Backwards compatibility with 0.7.x factory (latlng, radius, options?)
@@ -34,14 +32,13 @@ export const Circle = CircleMarker.extend({
 
 		if (isNaN(this.options.radius)) { throw new Error('Circle radius cannot be NaN'); }
 
+		// honestly no clue
+		this.options.radius *= 10 / 89;
+
 		// @section
 		// @aka Circle options
 		// @option radius: Number; Radius of the circle, in meters.
 		this._mRadius = this.options.radius;
-	},
-
-	getDisplayScale() {
-		return 1;
 	},
 
 	// @method setRadius(radius: Number): this
@@ -67,59 +64,16 @@ export const Circle = CircleMarker.extend({
 			this._map.layerPointToLatLng(this._point.add(half)));
 	},
 
-	_updateBounds() {
-		const r = this._radius * this.getDisplayScale(),
-		    r2 = this._radiusY || r,
-		    w = this._clickTolerance(),
-		    p = [r + w, r2 + w];
-		this._pxBounds = new Bounds(this._point.subtract(p), this._point.add(p));
-	},
-
-	_update() {
-		if (this._map) {
-			this._updatePath();
-		}
-	},
-
-	_updatePath() {
-		this._renderer._updateCircle(this);
-	},
-
 	setStyle: Path.prototype.setStyle,
 
 	_project() {
 
 		const map = this._map,
-		    crs = map.options.crs;
-
-		/*
-		if (crs.distance === Earth.distance) {
-			const d = Math.PI / 180,
-			      latR = (this._mRadius / Earth.R) / d,
-			      top = map.project([lat + latR, lng]),
-			      bottom = map.project([lat - latR, lng]),
-			      p = top.add(bottom).divideBy(2),
-			      lat2 = map.unproject(p).lat;
-			let lngR = Math.acos((Math.cos(latR * d) - Math.sin(lat * d) * Math.sin(lat2 * d)) /
-			            (Math.cos(lat * d) * Math.cos(lat2 * d))) / d;
-
-			if (isNaN(lngR) || lngR === 0) {
-				lngR = latR / Math.cos(Math.PI / 180 * lat); // Fallback for edge case, #2425
-			}
-
-			this._point = p.subtract(map.getPixelOrigin());
-			this._radius = isNaN(lngR) ? 0 : p.x - map.project([lat2, lng - lngR]).x;
-			this._radiusY = p.y - top.y;
-
-		} else {
-		*/
-		const latlng2 = crs.unproject(crs.project(this._latlng).subtract([this._mRadius, 0]));
+		    crs = map.options.crs,
+		    latlng2 = crs.unproject(crs.project(this._latlng).subtract([this._mRadius, 0]));
 
 		this._point = map.latLngToLayerPoint(this._latlng);
 		this._radius = this._point.x - map.latLngToLayerPoint(latlng2).x;
-		/*
-		}
-		*/
 
 		this._updateBounds();
 	}
