@@ -428,38 +428,35 @@ export const Canvas = Renderer.extend({
 	},
 
 	_bringToFront(layer) {
+		// begin indie.io: use a draw order array for performance
 		const
-		    order = this._drawOrder,
-		    index = order.indexOf(layer);
+		    index = this._drawOrder.indexOf(layer);
 
-		if (index < 0 || index === (order.length - 1)) {
+		if (index < 0 || index === (this._drawOrder.length - 1)) {
 			// Path is not present, or is already at front (last to draw)
 			return;
 		}
 
-		order.splice(index, 1);
-		order.push(layer);
+		this._drawOrder.splice(index, 1);
+		this._drawOrder.push(layer);
+		// end indie.io
 
 		this._requestRedraw(layer);
 	},
 
 	_bringToBack(layer) {
+		// begin indie.io: use a draw order array for performance
 		const
-		    order = this._drawOrder,
-		    index = order.indexOf(layer);
+		    index = this._drawOrder.indexOf(layer);
 
 		if (index < 1) {
 			// Path is not present, or is already at back (first to draw)
 			return;
 		}
 
-		// Shift all items before/behind the path up one spot
-		for (let i = 0; i < index; ++i) {
-			order[i + 1] = order[i];
-		}
-
-		// Now insert the path at beginning so it draws before/behind everything else
-		order[0] = layer;
+		this._drawOrder.splice(index, 1);
+		this._drawOrder.splice(0, 0, layer);
+		// end indie.io
 
 		this._requestRedraw(layer);
 	}
